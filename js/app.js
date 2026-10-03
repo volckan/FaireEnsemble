@@ -242,6 +242,7 @@
           <div class="tile-meta">${meta.join('')}</div>
         </div>
       </a>
+      <span class="tile-num" title="Carte ${i + 1} sur ${resultats.length}" aria-hidden="true">${i + 1}</span>
       <button type="button" class="fav" data-fav="${c.slug}" aria-pressed="${fav}" aria-label="${fav ? 'Retirer des' : 'Ajouter aux'} favoris : ${esc(c.titre)}" title="${fav ? 'Retirer des favoris' : 'Ajouter aux favoris'}">${icone('star')}</button>
     </article>`;
   }
@@ -430,8 +431,8 @@
           c.astuces ? `<section class="f-sec"><div class="callout callout-astuces"><h3>${icone('bulb')}Astuces, conseils, points de vigilance</h3>${prose(etapes(c.astuces))}</div></section>` : '',
           sectionDetail(c),
           section('Variantes', 'shuffle', prose(c.variantes && etapes(c.variantes))),
-          section('Ingrédients clés', 'flask', infos.ingredients ? prose(`<p>${esc(infos.ingredients)}</p>`) : ''),
-          section('Formats liés', 'compass', c.formats ? formatsLies(c.formats, c.slug) : ''),
+          section('Ingrédients clés', 'flask', infos.ingredients ? prose(`<p>${esc(infos.ingredients)}</p>`) : '', 'f-ingredients'),
+          section('Formats liés', 'compass', c.formats ? formatsLies(c.formats, c.slug) : '', 'f-formats'),
           autres,
           section('Experts, communauté de pratique', 'users', prose(c.experts))
         ]

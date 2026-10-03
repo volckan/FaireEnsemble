@@ -373,6 +373,14 @@ kbd {
 .fav[aria-pressed="true"] { color: #e3a917 !important; }
 .fav[aria-pressed="true"] .i { fill: currentColor; }
 @media (hover: none) { .tile .fav { opacity: 1; } }
+.tile .tile-num {
+  position: absolute; top: 12px; left: 12px;
+  width: 34px; height: 34px; border-radius: 50%;
+  display: grid; place-items: center; pointer-events: none;
+  background: color-mix(in srgb, var(--surface) 85%, transparent);
+  color: var(--ink-2); box-shadow: var(--shadow-sm);
+  font: 600 13px/1 var(--font); font-variant-numeric: tabular-nums;
+}
 
 mark { background: color-mix(in srgb, #e3a917 35%, transparent); color: inherit; border-radius: 3px; padding: 0 1px; }
 
@@ -678,6 +686,7 @@ a.concept:hover { text-decoration-style: solid; }
   .tile h3 { font-size: 17px; padding-right: 30px; }
   .tile-resume { -webkit-line-clamp: 2; font-size: 13px; }
   .tile .fav { top: 10px; right: 10px; width: 30px; height: 30px; }
+  .tile .tile-num { top: 10px; left: 10px; width: 30px; height: 30px; font-size: 12px; }
   .apropos-body { padding: 24px 20px; }
   .qr { width: calc(100vw - 16px); height: calc(100vh - 16px); border-radius: 14px; }
   .qr-body { padding: 16px; gap: 12px; }
@@ -712,6 +721,9 @@ a.concept:hover { text-decoration-style: solid; }
   #impression .detail summary h3 { margin-bottom: 12px; }
   #impression .detail .chev { display: none; }
   #impression .synthese-corps { font-size: 10.5pt; line-height: 1.55; }
-  #impression .f-detail { break-inside: auto; }
+  #impression .f-detail { break-inside: auto; break-before: page; }
+  /* à l'impression : ni sources, ni ingrédients clés, ni formats liés */
+  #impression .f-ingredients, #impression .f-formats,
+  #impression .detail .sources, #impression .detail .links, #impression .detail > .prose:not(.synthese-corps) { display: none; }
   .f-prompt { display: none; }
 }
