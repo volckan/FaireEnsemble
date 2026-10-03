@@ -499,21 +499,16 @@ a.concept:hover { text-decoration-style: solid; }
 .links .path { color: var(--ink-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
 .links .i { width: 15px; height: 15px; color: var(--ink-3); margin-left: auto; flex: none; }
 
-/* Synthèse des ressources : onglet dépliable sous la liste de liens */
-.synthese { margin-top: 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface-2); overflow: hidden; }
-.synthese summary {
-  display: flex; align-items: center; gap: 10px; padding: 10px 12px; cursor: pointer; list-style: none;
-  font-size: 14px; font-weight: 600; color: var(--ink); min-width: 0;
-}
-.synthese summary::-webkit-details-marker { display: none; }
-.synthese summary:hover { background: var(--accent-soft); }
-.synthese summary:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
-.synthese summary > .i { width: 15px; height: 15px; color: var(--accent); flex: none; }
-.synthese summary > .chev { color: var(--ink-3); margin-left: auto; transition: transform .2s; }
-.synthese[open] summary > .chev { transform: rotate(90deg); }
-.synthese[open] summary { border-bottom: 1px solid var(--line); }
-.synthese-hint { font-weight: 400; color: var(--ink-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
-.synthese-corps { padding: 14px 16px 16px; font-size: 15px; }
+/* La méthode en détail : le titre déplie la synthèse des ressources puis les liens */
+.detail summary { list-style: none; cursor: pointer; border-radius: 8px; margin: -4px -8px; padding: 4px 8px; }
+.detail summary::-webkit-details-marker { display: none; }
+.detail summary h3 { margin-bottom: 0; }
+.detail summary:hover h3 { color: var(--ink); }
+.detail summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 0; }
+.detail summary h3 .chev { width: 15px; height: 15px; color: var(--ink-3); margin-left: -2px; transition: transform .2s; }
+.detail[open] summary h3 .chev { transform: rotate(90deg); }
+.detail[open] summary { margin-bottom: 8px; }
+.synthese-corps { font-size: 15px; margin-bottom: 14px; }
 .synthese-corps h4 { font: 600 15px/1.3 var(--font); color: var(--ink); margin: 16px 0 6px; }
 .synthese-corps > :first-child { margin-top: 0; }
 .synthese-corps ol { margin: 0 0 10px; padding-left: 22px; }
@@ -639,8 +634,6 @@ a.concept:hover { text-decoration-style: solid; }
   .f-lead { font-size: 15.5px; }
   .facts { margin: 0 16px; grid-template-columns: 1fr 1fr; }
   .f-sections { padding: 4px 16px 0; }
-  .synthese-hint { display: none; }
-  .synthese-corps { padding: 12px 12px 14px; }
   .f-foot { margin: 28px 16px 0; }
   .callout { padding: 16px; }
   .callout-pourquoi .prose { font-size: 16.5px; }
@@ -681,10 +674,10 @@ a.concept:hover { text-decoration-style: solid; }
   #impression .prose { font-size: 10.5pt; line-height: 1.55; }
   #impression .callout, #impression .facts { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   #impression .links .i { display: none; }
-  #impression .synthese { border: none; background: none; margin-top: 10px; }
-  #impression .synthese summary { padding: 0 0 6px; font-size: 11pt; border-bottom: none; }
-  #impression .synthese summary .chev, #impression .synthese-hint { display: none; }
-  #impression .synthese-corps { padding: 0; font-size: 10.5pt; line-height: 1.55; }
-  #impression .f-sec:has(.synthese) { break-inside: auto; }
+  #impression .detail summary { margin: 0; padding: 0; }
+  #impression .detail summary h3 { margin-bottom: 12px; }
+  #impression .detail .chev { display: none; }
+  #impression .synthese-corps { font-size: 10.5pt; line-height: 1.55; }
+  #impression .f-detail { break-inside: auto; }
   .f-prompt { display: none; }
 }
