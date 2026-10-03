@@ -135,15 +135,3 @@ window.SOURCES_AJOUTEES = {
     'https://prim50.ac-normandie.fr/IMG/pdf/aveugle.pdf'
   ]
 };
-
-/* Liens des cartes retirés de la rubrique « La méthode en détail » : pages en anglais
-   (seuls les liens vers des pages en français sont conservés). */
-window.LIENS_EXCLUS = [
-  'https://gamestorming.com/bodystorming/',
-  'https://gamestorming.com/impact-effort-matrix-2/',
-  'https://www.innovationgames.com/plusdelta/',
-  'https://gamestorming.com/plusdelta/',
-  'https://www.savageandgreene.com/post-it-method/',
-  'http://fasterthan20.com/toolkit/goals-success-spectrum/',
-  'https://gamestorming.com/affinity-map/'
-];
