@@ -358,11 +358,11 @@
   function sectionDetail(c) {
     if (!c.detail) return '';
     const synthese = SYNTHESES[c.slug];
-    return `<section class="f-sec f-detail"><details class="detail">
+    return `<section class="f-sec f-detail"><div class="callout callout-detail"><details class="detail">
       <summary><h3>${icone('external')}La méthode en détail${icone('right', 'i chev')}</h3></summary>
       ${synthese ? `<div class="prose synthese-corps">${synthese}</div>` : ''}
       ${sectionLiens(c.detail)}
-    </details></section>`;
+    </details></div></section>`;
   }
 
   /** Section « La méthode en détail » : liste de liens si le contenu n'est composé que de liens. */
