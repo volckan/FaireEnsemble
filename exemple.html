@@ -39,9 +39,9 @@
     <header class="f-head exemple-head" id="entete" hidden>
       <div class="f-art"><img id="ex-image" src="" alt=""></div>
       <div>
-        <div class="f-kind"><span class="type">Exemple de réponse</span><span class="type" id="ex-type"></span></div>
+        <div class="f-kind"><span class="type" id="ex-sous-titre">Exemple de réponse</span><span class="type" id="ex-type"></span></div>
         <h1 id="ex-titre"></h1>
-        <p class="f-lead">Réponse d’un assistant IA au prompt généré par l’application pour cette carte, à partir du sujet et du public ci-dessous.</p>
+        <p class="f-lead" id="ex-lead">Réponse d’un assistant IA au prompt généré par l’application pour cette carte, à partir du sujet et du public ci-dessous.</p>
       </div>
     </header>
 
@@ -51,10 +51,16 @@
       <div><dt>Durée</dt><dd id="ex-duree"></dd></div>
     </dl>
 
-    <article class="exemple-md prose" id="reponse" aria-live="polite"><p class="exemple-etat">Chargement de la réponse…</p></article>
+    <nav class="exemple-nav" aria-label="Vues de l’exemple">
+      <a id="lien-reponse" data-vue="reponse" href="#">Réponse mise en forme</a>
+      <a id="lien-prompt" data-vue="prompt" href="#">Prompt utilisé</a>
+      <a id="lien-md" data-vue="source" href="#">Markdown brut</a>
+    </nav>
+
+    <article class="exemple-md prose" id="reponse" aria-live="polite"><p class="exemple-etat">Chargement…</p></article>
 
     <footer class="exemple-foot" id="pied" hidden>
-      <p>Réponse générée automatiquement à partir du seul prompt de l’application, sans relecture : elle peut contenir des approximations. <a id="lien-prompt" href="#" target="_blank" rel="noopener">Voir le prompt utilisé</a> · <a id="lien-md" href="#" target="_blank" rel="noopener">Fichier Markdown</a></p>
+      <p>Réponse générée automatiquement à partir du seul prompt de l’application, sans relecture : elle peut contenir des approximations.</p>
       <p>Carte « <span id="ex-titre-pied"></span> » – Lilian Ricaud et Mélanie Lacayrouze / Métacartes – <a href="https://creativecommons.org/licenses/by-sa/3.0/fr/" target="_blank" rel="noopener">CC BY-SA 3.0 FR</a>.</p>
     </footer>
   </main>
