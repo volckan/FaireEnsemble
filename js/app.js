@@ -4,6 +4,7 @@
   /* ================================================================ Données */
 
   const OBJECTIFS = window.OBJECTIFS;
+  const SYNTHESES = window.SYNTHESES || {};
   const OBJ = Object.fromEntries(OBJECTIFS.map(o => [o.id, o]));
 
   const DUREES = [
@@ -352,6 +353,16 @@
     return `<li><a href="${esc(a.href)}" target="_blank" rel="noopener"><span class="host">${esc(host)}</span><span class="path">${esc(texte)}</span>${icone('external')}</a></li>`;
   }
 
+  /** Synthèse des ressources liées (js/syntheses.js), repliée par défaut sous la liste de liens. */
+  function syntheseDetail(c) {
+    const html = SYNTHESES[c.slug];
+    if (!html) return '';
+    return `<details class="synthese">
+      <summary>${icone('book')}<span>Synthèse des ressources</span><span class="synthese-hint">l’explication détaillée de la méthode, sans parcourir les liens</span>${icone('right', 'i chev')}</summary>
+      <div class="prose synthese-corps">${html}</div>
+    </details>`;
+  }
+
   /** Section « La méthode en détail » : liste de liens si le contenu n'est composé que de liens. */
   function sectionLiens(html) {
     const d = document.createElement('div');
@@ -405,7 +416,7 @@
           section('Variantes', 'shuffle', prose(c.variantes && etapes(c.variantes))),
           section('Ingrédients clés', 'flask', infos.ingredients ? prose(`<p>${esc(infos.ingredients)}</p>`) : ''),
           section('Formats liés', 'compass', c.formats ? formatsLies(c.formats, c.slug) : ''),
-          section('La méthode en détail', 'external', c.detail ? sectionLiens(c.detail) : ''),
+          section('La méthode en détail', 'external', c.detail ? sectionLiens(c.detail) + syntheseDetail(c) : ''),
           autres,
           section('Experts, communauté de pratique', 'users', prose(c.experts))
         ]
@@ -614,6 +625,7 @@
           ligne('Ingrédients clés', infos.ingredients),
           ligne('Formats liés', c.formats),
           bloc('La méthode en détail', enTexte(c.detail)),
+          bloc('Synthèse des ressources sur la méthode', enTexte(SYNTHESES[c.slug])),
           ...autres(c.autres || []),
           bloc('Experts, communauté de pratique', enTexte(c.experts))
         ]
@@ -762,6 +774,7 @@
     const zone = document.createElement('div');
     zone.id = 'impression';
     zone.innerHTML = el.ficheContenu.innerHTML;
+    zone.querySelectorAll('details.synthese').forEach(d => { d.open = true; });   // la synthèse s'imprime dépliée
     document.body.append(zone);
     document.body.classList.add('printing');
     const fin = () => { document.body.classList.remove('printing'); zone.remove(); window.removeEventListener('afterprint', fin); };
