@@ -36,6 +36,14 @@
   const key = s => plain(s).split(' ').map(w => w.length > 3 ? w.replace(/s$/, '') : w).join(' ');
   const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+  /** Rééquilibre les balises d'un fragment HTML (certaines cartes ont un <div> ouvert dans l'intro et fermé
+      dans une autre rubrique, ce qui déformait la fiche). */
+  const equilibrer = html => { const t = document.createElement('template'); t.innerHTML = html; return t.innerHTML; };
+  const liensAjoutes = slug => {
+    const urls = window.SOURCES_AJOUTEES[slug];
+    return urls ? `<ul>${urls.map(u => `<li><a href="${esc(u)}">${esc(u)}</a></li>`).join(' ')}</ul>` : '';
+  };
+  const CHAMPS_HTML = ['intro', 'pourquoi', 'essentiel', 'astuces', 'variantes', 'detail', 'experts', 'questions', 'strategies', 'exemples'];
   const textOf = html => { const d = document.createElement('div'); d.innerHTML = html || ''; return d.textContent.replace(/\s+/g, ' ').trim(); };
 
   function parseDuree(txt) {
@@ -63,6 +71,11 @@
     const materiel = (infos.materiel || '').trim();
     const carte = {
       ...c,
+      ...Object.fromEntries(CHAMPS_HTML.filter(k => c[k]).map(k => [k, equilibrer(c[k])])),
+      autres: c.autres && c.autres.map(a => ({ ...a, html: equilibrer(a.html) })),
+      // cartes sans lien : sources choisies pour l'application (classement.js)
+      detail: c.detail || liensAjoutes(c.slug),
+      sourcesAjoutees: !c.detail && !!window.SOURCES_AJOUTEES[c.slug],
       objectifs,
       plage,
       taille: infos.taille || [],
@@ -361,7 +374,7 @@
     return `<section class="f-sec f-detail"><div class="callout callout-detail"><details class="detail">
       <summary><h3>${icone('external')}La méthode en détail${icone('right', 'i chev')}</h3></summary>
       ${synthese ? `<div class="prose synthese-corps">${synthese}</div>` : ''}
-      <h4 class="sources">Sources&nbsp;:</h4>
+      <h4 class="sources">${c.sourcesAjoutees ? 'Sources (choisies pour cette application)' : 'Sources'}&nbsp;:</h4>
       ${sectionLiens(c.detail)}
     </details></div></section>`;
   }

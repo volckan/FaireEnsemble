@@ -110,3 +110,31 @@ window.ALIAS = {
   'recolte':                  ['recolte'],
   'roles':                    ['role']
 };
+
+/* Sources ajoutées pour les cartes dont la rubrique « La méthode en détail » ne cite aucun lien.
+   Choisies pour cette application : elles ne figurent pas sur les cartes d'origine. */
+window.SOURCES_AJOUTEES = {
+  'arpentage': [
+    'https://www.associations-citoyennes.net/wp-cac/wp-content/uploads/2023/12/methode-maison-arpentage-MAJ-dec23.pdf',
+    'https://miramap.org/wp-content/uploads/2024/05/l_arpentage.pdf',
+    'https://sites.ac-nancy-metz.fr/documentation/mutualisons/modifier-la-page/axe-3-lintelligence-collective-et-les-competences-info-documentaires-du-xxieme-siecle/arpentage-litteraire/'
+  ],
+  'reunion-debout': [
+    'https://en.wikipedia.org/wiki/Stand-up_meeting',
+    'https://www.atlassian.com/fr/agile/scrum/standups',
+    'https://thedigitalprojectmanager.com/fr/gestion-de-projet/comment-animer-reunion-debout-plus-efficace-scrums-quotidiens/'
+  ],
+  'demande-de-silence': [
+    'https://engagee.ulb.be/wp-content/uploads/2021/03/Gestuelle-de-reunion.pdf',
+    'https://blog.scoutingmagazine.org/2016/07/06/shouting-signs-quiet-group-kind-defeats-purpose/',
+    'https://scoutpioneering.com/silent-scout-signals/'
+  ],
+  'les-animaux-de-la-ferme': [
+    'https://framagit.org/lilianricaud/travail-en-reseau/-/blob/master/animaux_de_la_ferme.md'
+  ],
+  'marche-en-aveugle': [
+    'https://framagit.org/lilianricaud/travail-en-reseau/-/blob/master/marche_en_aveugle.md',
+    'https://red.educagri.fr/wp-content/uploads/2014/09/domino-impact-et-autres-jeux-de-confiance.pdf',
+    'https://prim50.ac-normandie.fr/IMG/pdf/aveugle.pdf'
+  ]
+};
