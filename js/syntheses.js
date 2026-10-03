@@ -71,6 +71,36 @@ window.SYNTHESES = {
 <p>Wikipédia souligne que la matrice simplifie beaucoup&nbsp;: elle produit des listes souvent non hiérarchisées, subjectives, où interne et externe sont parfois confondus, et elle ne dit pas quoi faire ensuite. Une étude de Hill et Westbrook (1997) constatait qu’aucune des entreprises observées n’avait réellement utilisé les résultats de son SWOT. La méthode vaut donc surtout comme support de discussion collective, à condition d’être suivie d’un choix et d’un plan d’action.</p>
 `,
 
+  'arpentage': `
+<p>L’arpentage naît dans les cercles ouvriers de la fin du XIXe siècle, est repris pendant la Résistance dans l’entraînement mental de Joffre Dumazedier, puis diffusé par Peuple et Culture à partir des années 1950. La fiche « méthode maison » du Collectif des associations citoyennes, celle du MIRAMAP et la page de l’académie de Nancy-Metz détaillent le déroulé, la posture d’animation et les usages.</p>
+<h4>Origine</h4>
+<p>La fiche du Collectif des associations citoyennes présente l’arpentage comme un outil de réappropriation d’un savoir dit « froid » ou théorique, que l’on n’oserait pas aborder seul·e. Le MIRAMAP insiste sur la désacralisation du livre&nbsp;: on le découpe physiquement, on le lit vite et à plusieurs, et la lecture cesse d’intimider.</p>
+<h4>Déroulé pas à pas</h4>
+<ol>
+<li><strong>Démarrage</strong> (20 min)&nbsp;: présenter l’ouvrage, son auteur·rice, le contexte, puis la règle du jeu.</li>
+<li><strong>Découpage</strong>&nbsp;: diviser le nombre de pages par le nombre de personnes et déchirer ou couper le livre en parts égales, sans respecter les chapitres. Chacun·e reçoit sa liasse numérotée.</li>
+<li><strong>Lecture individuelle</strong> (30 à 60 min selon l’épaisseur, 45 min minimum chez le MIRAMAP)&nbsp;: lire en notant sur une feuille quatre entrées&nbsp;: les idées fortes, ce que je savais déjà, les questions que je me pose, ce qui me dérange ou me met en désaccord.</li>
+<li><strong>Première mise en commun, « ce que le livre dit »</strong>&nbsp;: dans l’ordre des pages, chaque personne restitue sa part en 3 à 5 min pendant que les autres prennent des notes sur un support commun listant les parties.</li>
+<li><strong>Deuxième mise en commun, « ce que le livre fait »</strong>&nbsp;: discussion libre sur les accords, les désaccords et les liens avec sa pratique.</li>
+<li><strong>Trace</strong>&nbsp;: compte rendu, affiche ou carte des chapitres.</li>
+</ol>
+<h4>Rôle de l’animateur·rice</h4>
+<ul>
+<li>Choisir un ouvrage qui fait débat, préparer le découpage en amont.</li>
+<li>Tenir le temps, rappeler que l’on restitue ce qui a marqué, pas tout, et garantir que chaque voix compte autant.</li>
+</ul>
+<h4>Variantes</h4>
+<ul>
+<li>Le MIRAMAP l’applique à des articles, rapports ou textes numériques imprimés.</li>
+<li>L’académie de Nancy-Metz propose l’« arpentage littéraire » en classe&nbsp;: un roman partagé entre élèves, restitution orale puis débat, avec des titres de Gaël Faye ou David Lescot.</li>
+</ul>
+<h4>Limites</h4>
+<ul>
+<li>Chacun·e ne lit qu’un fragment&nbsp;: la compréhension d’ensemble dépend de la qualité des restitutions.</li>
+<li>Déchirer un livre peut heurter&nbsp;: expliquer le sens du geste ou travailler sur photocopies. Compter de 3 h à une journée selon l’ouvrage.</li>
+</ul>
+`,
+
   'baton-de-parole': `
 <p>Wikipédia situe le bâton de parole dans les conseils de plusieurs nations autochtones d’Amérique du Nord, où un bâton orné de plumes, de perles ou de cuir circulait entre les orateurs&nbsp;; il est aujourd’hui repris dans l’éducation, les groupes de parole et l’animation de réunions. La fiche de Lilian Ricaud en décrit le déroulé concret et explique en quoi l’objet change la qualité de l’écoute.</p>
 <h4>Déroulé proposé par la fiche de Lilian Ricaud</h4>
@@ -242,7 +272,7 @@ window.SYNTHESES = {
 <p>Le débat mouvant est né dans les milieux de l’éducation populaire et de l’éducation à l’environnement, où il a été popularisé notamment par Franck Lepage et la Scop Le Pavé. La fiche Multibao compile des retours d’expérience (Outils-Réseaux, Supagro Florac, Centre des pratiques de la coopération), le scénario d’Animacoop donne une trame concrète sur les communs, et la vidéo de Franck Lepage montre la méthode en action.</p>
 <h4>Déroulé pas à pas selon la fiche Multibao</h4>
 <ol>
-<li>L’animateur·rice raconte une histoire volontairement polémique, dans laquelle les participant·es peuvent se projeter, et s’arrête à chaque moment clé pour lancer une affirmation.</li>
+<li>L’animateur·rice raconte une histoire volontairement polémique dans laquelle les participant·es peuvent se projeter, et s’arrête aux moments clés pour lancer une affirmation.</li>
 <li>Les participant·es se placent physiquement&nbsp;: les «&nbsp;d’accord&nbsp;» d’un côté de la salle, les «&nbsp;pas d’accord&nbsp;» de l’autre, zones marquées par des affiches. Personne n’a le droit de rester au milieu&nbsp;: se déplacer réellement oblige à choisir un camp et des arguments.</li>
 <li>L’animateur·rice demande qui veut expliquer son positionnement, en commençant par les personnes les plus fortement positionnées.</li>
 <li>Les arguments s’échangent en ping-pong&nbsp;: un argument d’un camp, puis un argument de l’autre. Quiconque juge valable un argument adverse peut changer de camp à tout moment.</li>
@@ -250,15 +280,14 @@ window.SYNTHESES = {
 </ol>
 <p>Compter de 8 à 50 personnes, de 1&nbsp;h à 2&nbsp;h pour une séance complète, une salle avec de l’espace et aucun matériel autre que les affiches. Règle à rappeler&nbsp;: personne n’est obligé de prendre la parole, mais tout le monde doit choisir un camp.</p>
 <h4>Ce que montre Franck Lepage</h4>
-<p>Dans la vidéo, l’animateur lance des affirmations volontairement clivantes, presque provocatrices, et insiste sur deux principes&nbsp;: on se place d’abord «&nbsp;avec les pieds&nbsp;» avant de chercher ses arguments, et le changement de camp est encouragé puisqu’il manifeste qu’un argument a fait mouche. L’animateur·rice ne donne jamais son avis&nbsp;: il ou elle distribue la parole, reformule et relance.</p>
+<p>Dans la vidéo, l’animateur lance des affirmations volontairement clivantes, presque provocatrices, et insiste sur deux principes&nbsp;: on se place d’abord «&nbsp;avec les pieds&nbsp;» avant de chercher ses arguments, et changer de camp est encouragé puisque cela manifeste qu’un argument a fait mouche. L’animateur·rice ne donne jamais son avis&nbsp;: il ou elle distribue la parole et relance.</p>
 <h4>Exemple de scénario&nbsp;: les communs (Animacoop)</h4>
-<p>Le scénario de Fabienne Morel pour Animacoop (30 à 40 minutes) déroule une histoire en six temps&nbsp;: vous prenez des photos pour votre nouvel employeur avec votre appareil personnel («&nbsp;vous en êtes propriétaire&nbsp;: oui ou non&nbsp;?&nbsp;»), puis avec celui de la structure&nbsp;; la structure publie les contenus de formation («&nbsp;à qui appartiennent-ils&nbsp;?&nbsp;»), en autorise la modification, puis l’usage commercial&nbsp;; enfin un nouveau président arrête tout partage. Chaque étape ouvre un débrief sur le droit d’auteur, les licences Creative Commons et l’utilité des communs. Lilian Ricaud y ajoute des affirmations courtes («&nbsp;j’ai le droit de photographier des personnes lors d’un événement&nbsp;») suivies d’un cercle samoan.</p>
+<p>Le scénario de Fabienne Morel pour Animacoop (30 à 40 minutes) déroule une histoire en six temps&nbsp;: vous prenez des photos pour votre nouvel employeur avec votre appareil personnel («&nbsp;vous en êtes propriétaire&nbsp;: oui ou non&nbsp;?&nbsp;»), puis avec celui de la structure&nbsp;; la structure publie les contenus de formation («&nbsp;à qui appartiennent-ils&nbsp;?&nbsp;»), en autorise la modification, puis l’usage commercial&nbsp;; enfin un nouveau président arrête tout partage. Chaque étape ouvre un débrief sur le droit d’auteur, les licences Creative Commons et les communs. Lilian Ricaud y ajoute des affirmations courtes («&nbsp;j’ai le droit de photographier des personnes lors d’un événement&nbsp;») suivies d’un cercle samoan.</p>
 <h4>Variantes et conseils</h4>
 <ul>
 <li>Laisser cinq vraies minutes à chaque camp pour se concerter avant la confrontation.</li>
 <li>Remplacer le simple d’accord / pas d’accord par un débat multi-facteurs avec plusieurs zones.</li>
-<li>Favoriser la parole de celles et ceux qui ne se sont pas encore exprimé·es.</li>
-<li>Le format se joue aussi en extérieur, sans matériel, et sert très bien de brise-glace.</li>
+<li>Favoriser la parole de celles et ceux qui ne se sont pas encore exprimé·es&nbsp;; le format se joue aussi en extérieur.</li>
 </ul>
 <h4>Limites</h4>
 <p>Formuler une affirmation claire et vraiment clivante est difficile, et rien ne garantit que le débat «&nbsp;prenne&nbsp;». Le format fait prendre position plus qu’il ne construit, et les personnes peu à l’aise avec l’argumentation peuvent se sentir exclues&nbsp;: à compléter par d’autres formes de débat.</p>
@@ -285,6 +314,31 @@ window.SYNTHESES = {
 <li>Coupe toute discussion hors des phases prévues et rappelle qui a la parole.</li>
 <li>Ne juge pas si une objection est raisonnable&nbsp;: aide la personne à le déterminer par des questions («&nbsp;Quels sont les arguments&nbsp;? Est-ce une préférence&nbsp;? Puis-je vivre avec cette proposition&nbsp;?&nbsp;»).</li>
 <li>Revient vers celles et ceux qui ont passé, et vérifie qu’aucune nouvelle objection n’apparaît après bonification.</li>
+</ul>
+`,
+
+  'demande-de-silence': `
+<p>Le geste du bras levé qui se propage appartient à deux traditions&nbsp;: la gestuelle de réunion des collectifs militants, telle que la décrit la fiche d’ULB engagée (Université libre de Bruxelles), et le signe scout, que Scouting Magazine et les signaux silencieux scouts documentent depuis les années 1940.</p>
+<h4>La gestuelle de réunion (ULB engagée)</h4>
+<p>La fiche présente un ensemble de gestes qui permettent de réagir sans interrompre&nbsp;: agiter les mains pour marquer son accord, tourner les mains en moulinet pour dire « déjà dit, on avance », lever la main pour demander la parole, former un T pour un point technique. Elle y ajoute des rituels&nbsp;: une minute de silence à l’ouverture, puis un tour de température où chacun·e dit « ça va / ça va pas », la parole passant par le regard. La demande de silence s’inscrit dans cette famille&nbsp;: un geste connu de tous·tes, qui évite de couvrir le bruit par du bruit.</p>
+<h4>Le signe scout</h4>
+<ol>
+<li>La personne qui veut l’attention lève le signe scout (bras levé, main dressée) et se tait.</li>
+<li>Chaque scout qui le voit cesse de parler, reproduit le signe et se tourne vers la personne.</li>
+<li>Le signe se propage de proche en proche&nbsp;; quand tout le groupe est silencieux et immobile, les consignes sont données.</li>
+</ol>
+<p>Scouting Magazine cite le guide des chefs de troupe&nbsp;: on ne crie jamais « signe levé&nbsp;! ». Hurler pour obtenir le silence revient à un concours de celui qui parle le plus fort et annule le sens du geste. Les signaux silencieux scouts le rangent parmi quatorze signaux de terrain (rassemblement, cercle, files) pensés pour diriger un groupe sans un mot.</p>
+<h4>Conseils</h4>
+<ul>
+<li>Annoncer la règle en début de rencontre et la montrer une fois.</li>
+<li>Attendre vraiment le silence complet&nbsp;: Scouting Magazine admet qu’il faut parfois rester le bras levé vingt secondes ou une minute entière. La patience est la leçon.</li>
+<li>En grand groupe (plénière, rassemblement de plein air, cour d’école), le geste traverse les distances où la voix ne porte pas.</li>
+<li>En classe, confier aussi le geste aux élèves&nbsp;: le silence n’est plus l’affaire du seul adulte.</li>
+</ul>
+<h4>Limites</h4>
+<ul>
+<li>Le geste suppose que les gens se voient&nbsp;: dans une foule dense ou à distance, un signal sonore convenu le complète.</li>
+<li>Utilisé trop souvent, il s’use&nbsp;; le réserver aux moments où le groupe en a besoin.</li>
 </ul>
 `,
 
@@ -505,6 +559,41 @@ window.SYNTHESES = {
 <p>En petit groupe, on passe directement à la plénière sans sous-groupes. Sa limite&nbsp;: il produit des listes plutôt que des analyses, et doit être suivi d’un plan d’action daté, faute de quoi les « Créer » restent sur le papier.</p>
 `,
 
+  'les-animaux-de-la-ferme': `
+<p>La fiche « La basse-cour » de Lilian Ricaud documente ce jeu issu du théâtre d’improvisation, où l’on retrouve ses semblables à l’oreille, yeux fermés. Elle précise la préparation et la sécurité&nbsp;; les ateliers d’impro en connaissent plusieurs variantes et un court débrief.</p>
+<h4>Préparation (fiche Lilian Ricaud)</h4>
+<ul>
+<li>Choisir un espace ouvert où l’on peut faire du bruit et circuler sans risque&nbsp;: pas de voitures, pas de marches, pas d’angles de table.</li>
+<li>Préparer des petits papiers avec un nom d’animal de ferme (cochon, poule, vache, mouton, âne, canard…), à raison de 3 ou 4 exemplaires du même animal, pour que personne ne reste seul·e.</li>
+<li>Prévoir 5 à 10 minutes, pour un groupe de 10 à 40 personnes.</li>
+</ul>
+<h4>Déroulé pas à pas</h4>
+<ol>
+<li>Distribuer un papier à chaque personne en demandant de ne pas le regarder tout de suite.</li>
+<li>Faire répartir le groupe dans tout l’espace, puis chacun·e lit en silence son animal et range le papier.</li>
+<li>Donner la consigne complète avant de commencer&nbsp;: fermer les yeux, imiter le cri de son animal, puis marcher « dans le noir » à la recherche des autres membres de sa famille, bras tendus pour éviter les chocs.</li>
+<li>Quand une famille se retrouve, ses membres se tiennent par l’épaule et continuent de crier pour attirer les retardataires.</li>
+<li>Arrêter le jeu quand toutes les familles sont formées ou au bout de quelques minutes, et faire ouvrir les yeux.</li>
+</ol>
+<h4>Rôle de l’animateur·rice</h4>
+<ul>
+<li>Rester yeux ouverts pendant toute la partie et circuler pour écarter doucement les personnes qui s’approchent d’un mur ou d’un obstacle.</li>
+<li>Annoncer un son de fin (claquement de mains) connu de tous·tes.</li>
+</ul>
+<h4>Variantes</h4>
+<ul>
+<li><strong>Yeux ouverts</strong>&nbsp;: on se retrouve au cri seul, sans se montrer le papier.</li>
+<li><strong>Familles de 3 ou 4</strong> servant ensuite de sous-groupes de travail&nbsp;: la constitution des équipes se fait sans négociation.</li>
+<li><strong>Arche de Noé</strong>&nbsp;: deux exemplaires par animal, chacun·e cherche sa moitié en imitant aussi la démarche de l’animal.</li>
+<li><strong>Tous au nid</strong>&nbsp;: une « maman » par famille garde les yeux ouverts, reste fixe et appelle.</li>
+</ul>
+<h4>Conseils et vigilance</h4>
+<ul>
+<li>Annoncer que l’on peut jouer yeux ouverts ou simplement observer&nbsp;: les personnes mal à l’aise avec leur corps ou leur voix ne doivent pas être forcées.</li>
+<li>Terminer par un court débrief&nbsp;: comment avez-vous reconnu les vôtres&nbsp;? Qu’est-ce qui a aidé, gêné&nbsp;?</li>
+</ul>
+`,
+
   'mandala-holistique': `
 <p>Le mandala holistique a été conçu par la facilitatrice néo-zélandaise Robina McCurdy, issue de la permaculture et des écovillages, et il est décrit en détail dans son livre « Faire Ensemble&nbsp;: outils participatifs pour les collectifs » (Éditions Passerelle Éco). La recette simplifiée de Lilian Ricaud et la variante « autoportrait » publiée sur Interpole en font un format opérationnel pour aider un collectif à formuler valeurs, principes et actions, puis à les valider au consensus.</p>
 <h4>Origine</h4>
@@ -528,6 +617,39 @@ window.SYNTHESES = {
 <p>Formuler les principes avec un verbe à l’infinitif pour les distinguer des valeurs, clarifier si un désaccord porte sur la formulation ou sur le fond, et ne pas sacrifier la validation du cercle central faute de temps&nbsp;: c’est elle qui donne sa légitimité à la charte.</p>
 `,
 
+  'marche-en-aveugle': `
+<p>La fiche de Lilian Ricaud, d’après Stéphane Langlois, décrit ce brise-glace en deux lignes&nbsp;: guider une personne qui marche les yeux fermés, par l’épaule ou la main, par la voix ou la pression. Les fiches de jeux de confiance d’Educagri (« Domino impact et autres jeux de confiance ») et de l’académie de Normandie (« parcours à l’aveugle ») y ajoutent parcours, variantes et débrief.</p>
+<h4>Déroulé pas à pas</h4>
+<ol>
+<li>Former des binômes, de préférence entre personnes qui se connaissent peu.</li>
+<li>Convenir d’un code (main sur l’épaule, main dans la main ou voix seule) et d’un mot d’arrêt.</li>
+<li>Le ou la guidé·e ferme les yeux (ou porte un bandeau) et se laisse conduire 3 à 5 minutes, à vitesse lente, dans un espace varié&nbsp;: sols différents, passage dedans/dehors, sons et odeurs.</li>
+<li>Inverser les rôles sur le même temps.</li>
+<li>Débriefer en binôme puis en cercle (10 min).</li>
+</ol>
+<h4>Variantes dans les sources</h4>
+<ul>
+<li><strong>Par la voix seule</strong>&nbsp;: le guide reste à un pas derrière et ne touche pas&nbsp;; la fiche de Normandie fait guider « à la voix et au bras ».</li>
+<li><strong>Par tapes sur l’épaule</strong>&nbsp;: aucun mot&nbsp;; une tape à gauche pour tourner à gauche, deux pour s’arrêter.</li>
+<li><strong>Parcours à l’aveugle</strong> (académie de Normandie)&nbsp;: slalom, haies basses, obstacles, lancer de sacs lestés, réalisé en trois passages&nbsp;: à vue, avec des lunettes qui réduisent la vision, puis bandeau et guide.</li>
+<li><strong>Chenille d’aveugles</strong> (Educagri)&nbsp;: file de 3 ou 4 personnes qui se tiennent par les épaules, toutes yeux bandés sauf la dernière, qui dirige sans parler par pression sur l’épaule, sur un parcours balisé.</li>
+<li><strong>Escalier et extérieur</strong>, uniquement en guidage par la main et avec annonce de chaque marche.</li>
+</ul>
+<h4>Sécurité</h4>
+<ul>
+<li>Lieu protégé des voitures, sans dénivelé brutal&nbsp;; repérer le parcours avant.</li>
+<li>Le guide avance lentement, annonce les obstacles, ne lâche jamais sans prévenir.</li>
+<li>Toute personne peut rouvrir les yeux à tout moment, sans justification.</li>
+</ul>
+<h4>Débrief</h4>
+<ul>
+<li>Côté guidé·e&nbsp;: quand ai-je eu confiance, quand ai-je douté&nbsp;? Qu’est-ce qui m’a rassuré&nbsp;: le contact, la voix, le rythme&nbsp;?</li>
+<li>Côté guide&nbsp;: quelle responsabilité ai-je ressentie&nbsp;? Ai-je trop ou pas assez expliqué&nbsp;?</li>
+<li>Educagri utilise ces jeux pour faire émerger des sentiments partagés (joies, difficultés, entraide), notamment au retour d’un séjour&nbsp;; la fiche de Normandie ouvre sur l’expérience du handicap visuel.</li>
+</ul>
+<p>Compter 20 à 30 minutes en tout.</p>
+`,
+
   'matrice-impact-effort': `
 <p>La matrice impact/effort est décrite dans « Gamestorming » (Dave Gray, Sunni Brown et James Macanufo, 2010, traduit chez Diateino), un recueil de jeux pour réunions créatives. La page du site Gamestorming en donne la fiche de jeu&nbsp;: objectif, nombre de joueurs, durée, déroulé et logique des quatre quadrants.</p>
 <h4>Objectif et cadre selon Gamestorming</h4>
@@ -543,17 +665,17 @@ window.SYNTHESES = {
 <h4>Rôle de l’animateur·rice</h4>
 <ul>
 <li>Tenir le rythme&nbsp;: une à deux minutes par idée, sinon la séance s’enlise sur les cas limites. En cas de désaccord persistant, placer le post-it à la frontière et y revenir à la fin.</li>
-<li>Demander qui porterait l’action et à quelle échéance&nbsp;: l’effort devient beaucoup plus concret quand il est rattaché à des personnes réelles.</li>
+<li>Demander qui porterait l’action et à quelle échéance&nbsp;: l’effort devient plus concret une fois rattaché à des personnes réelles.</li>
 <li>Faire préciser l’objectif par rapport auquel on mesure l’impact, faute de quoi chacun·e évalue selon ses propres critères.</li>
 </ul>
 <h4>Variantes et limites</h4>
-<p>Gamestorming suggère de réutiliser la matrice en fin de projet pour vérifier si les estimations étaient justes, et de l’appliquer à des fonctionnalités, des demandes clients ou des chantiers internes. La principale limite est le biais d’optimisme&nbsp;: les groupes sous-estiment presque toujours l’effort et surestiment l’impact. Il est utile de confier le placement de l’effort aux personnes qui feront le travail, et celui de l’impact aux personnes qui en bénéficieront.</p>
+<p>Gamestorming suggère de réutiliser la matrice en fin de projet pour vérifier si les estimations étaient justes. La principale limite est le biais d’optimisme&nbsp;: les groupes sous-estiment presque toujours l’effort et surestiment l’impact. Il est utile de confier l’estimation de l’effort aux personnes qui feront le travail, et celle de l’impact aux personnes qui en bénéficieront.</p>
 `,
 
   'matrice-plus-delta': `
 <p>Le Plus/Delta vient des pratiques d’amélioration continue et a été popularisé dans le monde de la facilitation par Luke Hohmann, auteur d’« Innovation Games » (2006), puis repris dans « Gamestorming » (Dave Gray et al., 2010). Les deux pages en font un rituel de fin de réunion, très court, pour recueillir à chaud ce qui a bien fonctionné et ce que le groupe ferait autrement.</p>
 <h4>Origine et intention</h4>
-<p>Innovation Games présente le Plus/Delta comme le plus simple des jeux de rétrospective&nbsp;: deux colonnes, cinq à dix minutes, pas de matériel particulier. Le choix du mot <strong>delta</strong> plutôt que « moins » est délibéré&nbsp;: la lettre grecque signifie « changement » et déplace la conversation de la critique vers l’amélioration. Pour Gamestorming, l’outil sert à instaurer une culture du retour régulier plutôt qu’un grand bilan annuel, et à donner aux participant·es un signal que leur avis compte, puisque les deltas sont visibles à la réunion suivante.</p>
+<p>Innovation Games présente le Plus/Delta comme le plus simple des jeux de rétrospective&nbsp;: deux colonnes, cinq à dix minutes, pas de matériel particulier. Le choix du mot <strong>delta</strong> plutôt que « moins » est délibéré&nbsp;: la lettre grecque signifie « changement » et déplace la conversation de la critique vers l’amélioration. Pour Gamestorming, l’outil instaure une culture du retour régulier plutôt qu’un grand bilan annuel, et montre aux participant·es que leur avis compte, puisque les deltas sont repris à la réunion suivante.</p>
 <h4>Déroulé pas à pas</h4>
 <ol>
 <li>Dans les cinq à dix dernières minutes d’une réunion, d’un atelier ou d’un sprint, tracer deux colonnes sur un tableau&nbsp;: « + » et « Δ ».</li>
@@ -567,7 +689,7 @@ window.SYNTHESES = {
 <li>Commencer toujours par les plus&nbsp;: cela ancre le positif et rend les deltas plus faciles à entendre.</li>
 <li>Reformuler les deltas en changements concrets (« commencer à l’heure » plutôt que « trop de retard »).</li>
 <li>Garder la trace&nbsp;: photographier le tableau et rouvrir la liste des deltas en début de réunion suivante pour montrer ce qui a été pris en compte.</li>
-<li>Innovation Games recommande de l’utiliser systématiquement, y compris après une réunion qui s’est bien passée&nbsp;: c’est la répétition qui crée l’habitude.</li>
+<li>L’utiliser systématiquement, même après une réunion réussie&nbsp;: c’est la répétition qui crée l’habitude.</li>
 </ul>
 <h4>Variantes et limites</h4>
 <p>Gamestorming propose une version silencieuse sur post-it suivie d’un vote à points, utile quand le groupe est grand ou que certaines voix dominent. En distanciel, deux colonnes dans un document partagé suffisent. La limite de l’outil est sa brièveté&nbsp;: il recueille des impressions, pas des causes, et ne remplace pas une rétrospective plus approfondie quand un problème se répète.</p>
@@ -640,7 +762,7 @@ window.SYNTHESES = {
 `,
 
   'six-chapeaux-de-bono': `
-<p>La méthode des six chapeaux a été formalisée par le psychologue maltais Edward de Bono dans « Six Thinking Hats » (1985), traduit en français sous le titre « Les six chapeaux de la réflexion ». La fiche Multibao, l’article de Wikipédia, celui des Cahiers de l’innovation et les ressources de l’Université du Nous en détaillent les rôles, les séquences types et les usages en gouvernance partagée.</p>
+<p>La méthode des six chapeaux a été formalisée par le psychologue maltais Edward de Bono dans « Six Thinking Hats » (1985), traduit en français sous le titre « Les six chapeaux de la réflexion ». Multibao, Wikipédia, les Cahiers de l’innovation et l’Université du Nous en détaillent les rôles, les séquences types et les usages en gouvernance partagée.</p>
 <h4>Origine et principe</h4>
 <p>De Bono part d’un constat&nbsp;: en réunion, chacun·e défend une position en mobilisant à la fois des faits, des émotions, des craintes et des idées, ce qui rend le débat confus et conflictuel. Les chapeaux séparent ces registres et imposent au groupe de <strong>penser en parallèle</strong>&nbsp;: tout le monde porte le même chapeau au même moment. Wikipédia précise que la méthode est une marque déposée, point que Multibao signale comme limite. Multibao rapporte un retour d’expérience à la foire aux savoirs KM4Dev (Rome, 2011)&nbsp;: des groupes novices l’ont trouvée immédiatement efficace.</p>
 <h4>Les six chapeaux, précisés</h4>
@@ -665,7 +787,7 @@ window.SYNTHESES = {
 <h4>Rôle de l’animateur·rice</h4>
 <ul>
 <li>Annoncer chaque changement de chapeau et recadrer dès qu’une intervention relève d’un autre registre (« ceci est un argument chapeau noir, on y revient dans cinq minutes »).</li>
-<li>Limiter strictement le temps du chapeau noir, naturellement le plus bavard.</li>
+<li>Limiter le temps du chapeau noir, toujours le plus bavard.</li>
 <li>Noter les contributions par couleur sur des feuilles distinctes.</li>
 </ul>
 <h4>Usages en gouvernance partagée</h4>
@@ -914,6 +1036,38 @@ window.SYNTHESES = {
 </ul>
 `,
 
+  'reunion-debout': `
+<p>Sur Wikipédia, la réunion debout (« stand-up ») vient de l’Extreme Programming, tandis que le « daily scrum » vient de Scrum&nbsp;; les deux s’inspirent d’un article de Jim Coplien sur l’équipe du tableur Quattro Pro chez Borland, au début des années 1990. Chez Atlassian et dans l’article du Digital Project Manager, on trouve le rituel détaillé, les pièges classiques et des adaptations hors du logiciel.</p>
+<h4>Déroulé du daily scrum</h4>
+<ol>
+<li><strong>Même heure, même lieu</strong>, chaque jour, de préférence devant le tableau des tâches ou l’outil de suivi.</li>
+<li><strong>15 minutes maximum</strong>, chronomètre visible.</li>
+<li>À tour de rôle (ordre du cercle, bâton de parole ou objet symbolique lancé), chacun·e répond aux <strong>trois questions</strong> d’Atlassian&nbsp;: qu’ai-je fait hier&nbsp;? que vais-je faire aujourd’hui&nbsp;? qu’est-ce qui me bloque&nbsp;?</li>
+<li>Tout sujet qui appelle un échange à plusieurs est noté dans un <strong>parking</strong> et traité juste après, seulement avec les personnes concernées.</li>
+<li>Clôturer dès que tout le monde a parlé, même avant la fin du temps.</li>
+</ol>
+<h4>Rôle de l’animateur·rice</h4>
+<ul>
+<li>Garder le rythme et renvoyer au parking tout ce qui dérive en résolution de problème.</li>
+<li>Veiller à ce que chacun·e s’adresse à l’équipe, et non au chef ou à la cheffe de projet&nbsp;: la réunion sert la coordination entre pairs, pas le reporting.</li>
+<li>Faire évoluer le rituel en rétrospective, comme le fait l’équipe Jira d’Atlassian.</li>
+</ul>
+<h4>Pièges relevés par le Digital Project Manager</h4>
+<ul>
+<li>Le monologue&nbsp;: des participant·es qui s’étendent ou partagent des détails sans intérêt pour les autres.</li>
+<li>La résolution de problème en séance, qui transforme 15 min en une heure.</li>
+<li>Les retards et l’attente des absent·es&nbsp;: démarrer à l’heure, quoi qu’il arrive.</li>
+<li>Arriver sans savoir quoi dire&nbsp;: Atlassian conseille de préparer ses trois réponses avant de venir. Le stand-up n’est pas un moment de planification, réservé au sprint planning.</li>
+</ul>
+<h4>Variantes</h4>
+<ul>
+<li><strong>À distance</strong>&nbsp;: visioconférence caméras allumées, ou point écrit asynchrone quand les fuseaux horaires s’y opposent.</li>
+<li><strong>Parcourir le tableau</strong> plutôt que les personnes&nbsp;: on passe en revue les tâches en cours, de la plus avancée à la moins avancée.</li>
+<li><strong>Hebdomadaire</strong> pour les équipes qui ne travaillent pas ensemble au quotidien.</li>
+<li><strong>Équipes non techniques</strong>&nbsp;: le même format s’applique à une équipe associative, de rédaction ou de service, en remplaçant « tickets » par « chantiers ».</li>
+</ul>
+`,
+
   'reunion-en-marchant': `
 <p>La fiche Cooptic consacrée à la « réunion en marchant » reprend la pratique du <em>walking meeting</em> popularisée par les dirigeants de la Silicon Valley, tout en rappelant qu’elle est bien plus ancienne&nbsp;: Aristote enseignait déjà en marchant avec ses élèves, d’où le nom d’école « péripatéticienne ». La ressource précise les bénéfices attendus, le format à privilégier, la façon de garder une trace des échanges et les contraintes à anticiper.</p>
 <h4>Ce que la marche apporte</h4>
@@ -1125,7 +1279,7 @@ window.SYNTHESES = {
 <h4>Les sept principes de conception</h4>
 <ol>
 <li>Clarifier le contexte&nbsp;: objectif, personnes à inviter, temps disponible, meilleur résultat envisageable.</li>
-<li>Créer un espace hospitalier et « sûr »&nbsp;: tables rondes de quatre (trois est trop peu, cinq limite l’interaction), nappes en papier, feutres, fleurs, musique douce, boissons.</li>
+<li>Créer un espace hospitalier et « sûr »&nbsp;: tables rondes de quatre (cinq limite l’interaction), nappes en papier, feutres, fleurs, boissons.</li>
 <li>Explorer des questions qui comptent.</li>
 <li>Encourager la contribution de chacun·e, au besoin avec un objet de parole.</li>
 <li>Connecter les perspectives par la rotation entre tables.</li>
@@ -1135,9 +1289,9 @@ window.SYNTHESES = {
 <h4>Rôles</h4>
 <p>Le·la facilitateur·rice nomme le Café selon sa finalité, rédige l’invitation comme une exploration ouverte, affiche questions et règlement sur chaque table, circule, encourage à dessiner et signale les rotations. L’<strong>hôte de table</strong>, volontaire, reste en place, rappelle de noter les connexions, accueille les nouveaux venus et résume les idées fortes du tour précédent. Les autres sont des « voyageur·ses » ou « ambassadeur·rices de sens ».</p>
 <h4>Questions puissantes</h4>
-<p>Une bonne question est simple, ouverte, génère de l’énergie et révèle des hypothèses inconscientes. La version expert met en garde contre « Qu’est-ce qui ne va pas et à qui la faute&nbsp;? » et contre les questions sur la vérité, qui crispent&nbsp;: viser ce qui est utile. Chez Art of Hosting, les trois questions sont co-créées entre le client, qui connaît la finalité, et les animateur·rices, qui savent les formuler. L’exemple Multibao des journées de la restauration collective responsable (Fondation Nicolas Hulot) illustre la progression&nbsp;: bien-être des concitoyens, besoins d’un approvisionnement responsable, solutions dans mon métier.</p>
+<p>Une bonne question est simple, ouverte, génère de l’énergie et révèle des hypothèses inconscientes. La version expert met en garde contre « Qu’est-ce qui ne va pas et à qui la faute&nbsp;? » et contre les questions sur la vérité, qui crispent&nbsp;: viser ce qui est utile. Chez Art of Hosting, les trois questions sont co-créées entre le client, qui connaît la finalité, et les animateur·rices, qui savent les formuler. L’exemple Multibao des journées de la restauration collective responsable illustre la progression&nbsp;: bien-être, besoins, solutions dans mon métier.</p>
 <h4>Récolte</h4>
-<p>Cinq façons de rendre visible&nbsp;: rapporteur·rice graphique, nappes affichées au mur, une idée clé par grande feuille, groupes d’affinités de post-it, journal publié après coup. La plénière demande à chaque table l’essentiel de ses découvertes, puis un silence sur « S’il y avait une seule voix dans la pièce, que dirait-elle&nbsp;? ». Multibao ajoute un vote facultatif et une synthèse envoyée à tous. Compter 4 heures au minimum, de 12 à 1 200 personnes.</p>
+<p>Cinq façons de rendre visible&nbsp;: rapporteur·rice graphique, nappes affichées au mur, une idée clé par grande feuille, groupes d’affinités de post-it, journal publié après coup. La plénière demande à chaque table l’essentiel de ses découvertes, puis un silence sur « S’il y avait une seule voix dans la pièce, que dirait-elle&nbsp;? ». Multibao ajoute un vote facultatif et une synthèse envoyée à tous. Compter 4 heures minimum, 12 à 1 200 personnes.</p>
 <h4>Variantes</h4>
 <ul>
 <li><strong>Action World Café</strong> (David Delon et Lilian Ricaud)&nbsp;: chaque table porte un thème&nbsp;; une action par post-it, formulée par un verbe, « au niveau de l’eau » (ni « sauver la planète » ni « éteindre la lumière »). Trois tours de 15 min, lecture des post-it existants avant de compléter, puis priorisation (matrice impact/effort, vote à points).</li>
@@ -1146,7 +1300,7 @@ window.SYNTHESES = {
 <h4>Limites</h4>
 <ul>
 <li>Sans introduction au sujet, les moins informé·es se retirent et les expert·es s’ennuient.</li>
-<li>Adapté à l’exploration, moins à un plan de mise en œuvre détaillé&nbsp;; en dessous de 12 personnes, préférer un cercle de dialogue.</li>
+<li>Adapté à l’exploration, moins à un plan de mise en œuvre détaillé.</li>
 </ul>
 `,
 };
