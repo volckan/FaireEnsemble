@@ -535,6 +535,13 @@
   const promptSaisi = { sujet: '', publicCible: '', duree: '', ...stock.get('fe-prompt', {}) };
   const dureeCarte = c => c.infos?.duree ? dureeTxt(c.infos.duree) : '';
 
+  /** Lien vers l'exemple de réponse (dossier Exemples/, page exemple.html) quand la carte en a un. */
+  function lienExemple(c) {
+    const ex = window.EXEMPLES;
+    if (!ex || !ex.reponses[c.slug]) return '';
+    return `<p class="prompt-exemple"><a href="exemple.html?carte=${encodeURIComponent(c.slug)}" target="_blank" rel="noopener">Voir le résultat pour le prompt « ${esc(ex.sujet)} »${icone('external')}</a></p>`;
+  }
+
   function sectionPrompt(c) {
     const defaut = dureeCarte(c);
     const duree = promptSaisi.duree || defaut;
@@ -572,6 +579,7 @@
             </div>
           </div>
           <button class="btn btn-primary" type="submit">${icone('sparkle')}Générer le prompt</button>
+          ${lienExemple(c)}
         </form>
         <div class="prompt-sortie" id="prompt-sortie" hidden>
           <label for="prompt-texte">Prompt à coller dans votre assistant IA</label>
