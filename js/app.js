@@ -361,6 +361,7 @@
     return `<section class="f-sec f-detail"><div class="callout callout-detail"><details class="detail">
       <summary><h3>${icone('external')}La méthode en détail${icone('right', 'i chev')}</h3></summary>
       ${synthese ? `<div class="prose synthese-corps">${synthese}</div>` : ''}
+      <h4 class="sources">Sources&nbsp;:</h4>
       ${sectionLiens(c.detail)}
     </details></div></section>`;
   }
@@ -415,10 +416,10 @@
           c.pourquoi ? `<section class="f-sec"><div class="callout callout-pourquoi"><h3>${icone('target')}Pourquoi faire ?</h3>${prose(c.pourquoi)}</div></section>` : '',
           section('L’essentiel', 'list', prose(c.essentiel && etapes(c.essentiel))),
           c.astuces ? `<section class="f-sec"><div class="callout callout-astuces"><h3>${icone('bulb')}Astuces, conseils, points de vigilance</h3>${prose(etapes(c.astuces))}</div></section>` : '',
+          sectionDetail(c),
           section('Variantes', 'shuffle', prose(c.variantes && etapes(c.variantes))),
           section('Ingrédients clés', 'flask', infos.ingredients ? prose(`<p>${esc(infos.ingredients)}</p>`) : ''),
           section('Formats liés', 'compass', c.formats ? formatsLies(c.formats, c.slug) : ''),
-          sectionDetail(c),
           autres,
           section('Experts, communauté de pratique', 'users', prose(c.experts))
         ]
@@ -623,11 +624,11 @@
           ].filter(Boolean).join('\n'),
           bloc('L’essentiel', enTexte(c.essentiel)),
           bloc('Astuces, conseils, points de vigilance', enTexte(c.astuces)),
+          bloc('La méthode en détail (synthèse des ressources)', enTexte(SYNTHESES[c.slug])),
+          bloc('La méthode en détail (sources)', enTexte(c.detail)),
           bloc('Variantes', enTexte(c.variantes)),
           ligne('Ingrédients clés', infos.ingredients),
           ligne('Formats liés', c.formats),
-          bloc('La méthode en détail (synthèse des ressources)', enTexte(SYNTHESES[c.slug])),
-          bloc('La méthode en détail (liens)', enTexte(c.detail)),
           ...autres(c.autres || []),
           bloc('Experts, communauté de pratique', enTexte(c.experts))
         ]
