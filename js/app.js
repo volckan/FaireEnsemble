@@ -108,9 +108,11 @@
 
   /* ================================================================== État */
 
+  // Par défaut, seules les recettes sont affichées (le type « Ingrédients » se coche dans les filtres).
+  const TYPES_DEFAUT = ['recette'];
   const etat = {
     q: '',
-    objectifs: new Set(), durees: new Set(), tailles: new Set(), complexites: new Set(), types: new Set(),
+    objectifs: new Set(), durees: new Set(), tailles: new Set(), complexites: new Set(), types: new Set(TYPES_DEFAUT),
     sansMateriel: false, favoris: false, tri: 'pertinence'
   };
   let resultats = [];
@@ -536,7 +538,7 @@
   const promptSaisi = { sujet: '', publicCible: '', duree: '', ...stock.get('fe-prompt', {}) };
   const dureeCarte = c => c.infos?.duree ? dureeTxt(c.infos.duree) : '';
 
-  /** Lien vers l'exemple de réponse (dossier Exemples/, page exemple.html) quand la carte en a un. */
+  /** Lien vers l'exemple de réponse (dossier exemples/, page exemple.html) quand la carte en a un. */
   function lienExemple(c) {
     const ex = window.EXEMPLES;
     if (!ex || !ex.reponses[c.slug]) return '';
@@ -816,6 +818,7 @@
   function reinitialiser() {
     etat.q = ''; el.recherche.value = '';
     ['objectifs', 'durees', 'tailles', 'complexites', 'types'].forEach(g => etat[g].clear());
+    TYPES_DEFAUT.forEach(t => etat.types.add(t));
     etat.sansMateriel = etat.favoris = false;
     el.sansMateriel.checked = el.favoris.checked = false;
     rendre();

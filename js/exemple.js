@@ -1,4 +1,4 @@
-/* Page exemple.html : affiche la réponse d'exemple (dossier Exemples/) de la carte indiquée par ?carte=<slug>. */
+/* Page exemple.html : affiche la réponse d'exemple (dossier exemples/) de la carte indiquée par ?carte=<slug>. */
 (() => {
   'use strict';
 
@@ -50,7 +50,7 @@
   $('#ex-lead').textContent = {
     reponse: 'Réponse d’un assistant IA au prompt généré par l’application pour cette carte, à partir du sujet et du public ci-dessous.',
     prompt: 'Texte exact du prompt généré par l’application pour cette carte, avec le sujet et le public ci-dessous. C’est ce texte qui a produit l’exemple de réponse.',
-    source: 'Le fichier Markdown de la réponse, tel qu’il est enregistré dans le dossier Exemples.'
+    source: 'Le fichier Markdown de la réponse, tel qu’il est enregistré dans le dossier exemples.'
   }[vue];
 
   const charger = f => fetch(f).then(r => { if (!r.ok) throw new Error(r.status); return r.text(); });
