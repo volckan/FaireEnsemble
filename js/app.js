@@ -173,7 +173,7 @@
     type: $('#f-type'), sansMateriel: $('#f-sans-materiel'), favoris: $('#f-favoris'), nbFavoris: $('#nb-favoris'),
     recherche: $('#recherche'), tri: $('#tri'), grille: $('#grille'), vide: $('#vide'), compteur: $('#compteur'),
     actifs: $('#filtres-actifs'), nbFiltres: $('#nb-filtres'), filtres: $('#filtres'), fondFiltres: $('#filtres-fond'),
-    fiche: $('#fiche'), ficheContenu: $('#fiche-contenu'), fichePos: $('#fiche-pos'), apropos: $('#apropos'), toast: $('#toast')
+    fiche: $('#fiche'), ficheContenu: $('#fiche-contenu'), fichePos: $('#fiche-pos'), apropos: $('#apropos'), qr: $('#qr'), qrCode: $('#qr-code'), qrUrl: $('#qr-url'), toast: $('#toast')
   };
 
   const icone = (id, cls = 'i') => `<svg class="${cls}" aria-hidden="true"><use href="#i-${id}"/></svg>`;
@@ -868,6 +868,7 @@
       case 'lien': copier(location.href, 'Lien de la carte copié'); return;
       case 'imprimer': imprimer(); return;
       case 'fermer-apropos': el.apropos.close(); return;
+      case 'fermer-qr': el.qr.close(); return;
       case 'prompt': allerAuPrompt(); return;
       case 'duree-carte': reprendreDureeCarte(); return;
       case 'copier-prompt': copier($('#prompt-texte').value, 'Prompt copié : collez-le dans votre assistant IA'); return;
@@ -877,7 +878,28 @@
     // de texte relâchée hors de la fiche ne doit pas la fermer)
     if (t === el.fiche && appui === el.fiche) fermerFiche();
     if (t === el.apropos && appui === el.apropos) el.apropos.close();
+    if (t === el.qr && appui === el.qr) el.qr.close();
   });
+
+  /* ------------------------------------------------------------- QR code */
+
+  /** Adresse de l'application (sans carte ouverte), telle qu'elle est hébergée. */
+  const urlApp = () => location.origin + location.pathname + location.search;
+
+  /** QR code de l'adresse de l'application, en SVG (généré à l'ouverture : valable quel que soit l'hébergement). */
+  function afficherQr() {
+    const url = urlApp();
+    const qr = qrcode(0, 'M');   // 0 : plus petite version capable de contenir l'adresse
+    qr.addData(url);
+    qr.make();
+    const n = qr.getModuleCount(), marge = 2;   // zone de silence de 2 modules (fond blanc étendu par le style)
+    let d = '';
+    for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (qr.isDark(r, c)) d += `M${c + marge} ${r + marge}h1v1h-1z`;
+    const taille = n + marge * 2;
+    el.qrCode.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${taille} ${taille}" shape-rendering="crispEdges" aria-hidden="true"><rect width="${taille}" height="${taille}" fill="#fff"/><path d="${d}" fill="#000"/></svg>`;
+    el.qrUrl.textContent = url;
+    el.qr.showModal();
+  }
 
   el.fiche.addEventListener('cancel', e => { e.preventDefault(); fermerFiche(); });
 
@@ -913,6 +935,7 @@
     try { localStorage.setItem('fe-theme', t); } catch { /* ignoré */ }
   });
   $('#btn-apropos').addEventListener('click', () => el.apropos.showModal());
+  $('#btn-qr').addEventListener('click', afficherQr);
   $('#btn-filtres').addEventListener('click', () => ouvrirFiltres(true));
   $('#btn-fermer-filtres').addEventListener('click', () => ouvrirFiltres(false));
   $('#btn-voir-resultats').addEventListener('click', () => ouvrirFiltres(false));
@@ -926,7 +949,7 @@
       if (e.key === 'ArrowRight' && !saisie) { e.preventDefault(); decaler(1); }
       return;
     }
-    if (e.key === '/' && !saisie && !el.apropos.open) { e.preventDefault(); el.recherche.focus(); el.recherche.select(); }
+    if (e.key === '/' && !saisie && !el.apropos.open && !el.qr.open) { e.preventDefault(); el.recherche.focus(); el.recherche.select(); }
     if (e.key === 'Escape' && el.filtres.classList.contains('open')) ouvrirFiltres(false);
   });
 
