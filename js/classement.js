@@ -120,14 +120,11 @@ window.SOURCES_AJOUTEES = {
     'https://sites.ac-nancy-metz.fr/documentation/mutualisons/modifier-la-page/axe-3-lintelligence-collective-et-les-competences-info-documentaires-du-xxieme-siecle/arpentage-litteraire/'
   ],
   'reunion-debout': [
-    'https://en.wikipedia.org/wiki/Stand-up_meeting',
     'https://www.atlassian.com/fr/agile/scrum/standups',
     'https://thedigitalprojectmanager.com/fr/gestion-de-projet/comment-animer-reunion-debout-plus-efficace-scrums-quotidiens/'
   ],
   'demande-de-silence': [
-    'https://engagee.ulb.be/wp-content/uploads/2021/03/Gestuelle-de-reunion.pdf',
-    'https://blog.scoutingmagazine.org/2016/07/06/shouting-signs-quiet-group-kind-defeats-purpose/',
-    'https://scoutpioneering.com/silent-scout-signals/'
+    'https://engagee.ulb.be/wp-content/uploads/2021/03/Gestuelle-de-reunion.pdf'
   ],
   'les-animaux-de-la-ferme': [
     'https://framagit.org/lilianricaud/travail-en-reseau/-/blob/master/animaux_de_la_ferme.md'
@@ -138,3 +135,15 @@ window.SOURCES_AJOUTEES = {
     'https://prim50.ac-normandie.fr/IMG/pdf/aveugle.pdf'
   ]
 };
+
+/* Liens des cartes retirés de la rubrique « La méthode en détail » : pages en anglais
+   (seuls les liens vers des pages en français sont conservés). */
+window.LIENS_EXCLUS = [
+  'https://gamestorming.com/bodystorming/',
+  'https://gamestorming.com/impact-effort-matrix-2/',
+  'https://www.innovationgames.com/plusdelta/',
+  'https://gamestorming.com/plusdelta/',
+  'https://www.savageandgreene.com/post-it-method/',
+  'http://fasterthan20.com/toolkit/goals-success-spectrum/',
+  'https://gamestorming.com/affinity-map/'
+];

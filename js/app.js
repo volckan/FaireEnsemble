@@ -43,6 +43,17 @@
     const urls = window.SOURCES_AJOUTEES[slug];
     return urls ? `<ul>${urls.map(u => `<li><a href="${esc(u)}">${esc(u)}</a></li>`).join(' ')}</ul>` : '';
   };
+  /** Retire de la rubrique les liens listés dans LIENS_EXCLUS (classement.js) ; vide si plus rien d'utile. */
+  const sansLiensExclus = html => {
+    const exclus = new Set((window.LIENS_EXCLUS || []).map(u => u.replace(/\/$/, '')));
+    const t = document.createElement('template');
+    t.innerHTML = html;
+    for (const a of [...t.content.querySelectorAll('a[href]')]) {
+      if (exclus.has(a.getAttribute('href').replace(/\/$/, ''))) (a.closest('li') || a).remove();
+    }
+    for (const ul of [...t.content.querySelectorAll('ul, ol')]) if (!ul.querySelector('li')) ul.remove();
+    return t.content.querySelector('a[href]') || t.content.textContent.trim() ? t.innerHTML : '';
+  };
   const CHAMPS_HTML = ['intro', 'pourquoi', 'essentiel', 'astuces', 'variantes', 'detail', 'experts', 'questions', 'strategies', 'exemples'];
   const textOf = html => { const d = document.createElement('div'); d.innerHTML = html || ''; return d.textContent.replace(/\s+/g, ' ').trim(); };
 
@@ -74,7 +85,7 @@
       ...Object.fromEntries(CHAMPS_HTML.filter(k => c[k]).map(k => [k, equilibrer(c[k])])),
       autres: c.autres && c.autres.map(a => ({ ...a, html: equilibrer(a.html) })),
       // cartes sans lien : sources choisies pour l'application (classement.js)
-      detail: c.detail || liensAjoutes(c.slug),
+      detail: c.detail ? sansLiensExclus(c.detail) : liensAjoutes(c.slug),
       sourcesAjoutees: !c.detail && !!window.SOURCES_AJOUTEES[c.slug],
       objectifs,
       plage,
@@ -369,13 +380,12 @@
   /** Section « La méthode en détail », repliée par défaut : le titre déplie la synthèse des ressources
       (js/syntheses.js) puis la liste de liens de la carte. */
   function sectionDetail(c) {
-    if (!c.detail) return '';
     const synthese = SYNTHESES[c.slug];
+    if (!c.detail && !synthese) return '';
     return `<section class="f-sec f-detail"><div class="callout callout-detail"><details class="detail">
       <summary><h3>${icone('external')}La méthode en détail${icone('right', 'i chev')}</h3></summary>
       ${synthese ? `<div class="prose synthese-corps">${synthese}</div>` : ''}
-      <h4 class="sources">${c.sourcesAjoutees ? 'Sources (choisies pour cette application)' : 'Sources'}&nbsp;:</h4>
-      ${sectionLiens(c.detail)}
+      ${c.detail ? `<h4 class="sources">${c.sourcesAjoutees ? 'Sources (choisies pour cette application)' : 'Sources'}&nbsp;:</h4>${sectionLiens(c.detail)}` : ''}
     </details></div></section>`;
   }
 
