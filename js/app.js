@@ -581,7 +581,8 @@
     </section>`;
   }
 
-  /** Convertit un contenu HTML de carte en texte brut, en gardant paragraphes, listes (imbriquées) et retours à la ligne. */
+  /** Convertit un contenu HTML de carte en texte Markdown léger pour le prompt : paragraphes, listes (imbriquées),
+      retours à la ligne, sous-titres (### ) et gras (**). */
   function enTexte(html) {
     const tpl = document.createElement('template');
     tpl.innerHTML = html || '';
@@ -589,15 +590,22 @@
     const visiter = n => {
       if (n.nodeType === 3) { s += n.nodeValue.replace(/\s+/g, ' '); return; }
       if (n.nodeType !== 1) return;
-      const liste = /^(UL|OL)$/.test(n.tagName);
+      const liste = /^(UL|OL)$/.test(n.tagName), titre = /^H\d$/.test(n.tagName) && !niveau;
       // un bloc sépare les paragraphes, sauf dans une liste où il ne doit pas couper la puce
       const sep = liste || /^(P|DIV|H\d|BLOCKQUOTE)$/.test(n.tagName) ? (niveau ? ' ' : '\n\n') : '';
       if (n.tagName === 'BR') s += '\n';
       if (n.tagName === 'LI') s += `\n${'\t'.repeat(Math.max(niveau - 1, 0))}- `;   // \t : retrait des sous-listes
       s += sep;
+      if (titre) s += '### ';
+      const gras = /^(STRONG|B)$/.test(n.tagName) && n.textContent.trim();
+      if (gras) s += /(^|[\s(«“])$/.test(s) ? '**' : ' **';   // le gras Markdown doit être isolé du mot précédent
       if (liste) niveau++;
       n.childNodes.forEach(visiter);
       if (liste) niveau--;
+      if (gras) {
+        const suite = n.nextSibling && n.nextSibling.nodeType === 3 ? n.nextSibling.nodeValue : '';
+        s = s.replace(/\s+$/, '') + '**' + (/^[\p{L}\p{N}]/u.test(suite) ? ' ' : '');   // ...et du mot suivant
+      }
       s += sep;
     };
     tpl.content.childNodes.forEach(visiter);
@@ -612,46 +620,41 @@
     / et a été initialement publié par [^.]*? dans le livre « Faire ensemble[^»]*»/gi
   ];
 
-  /** Contenu de la carte, dans l'ordre de la fiche, pour servir de référence au LLM. */
+  /** Contenu de la carte, dans l'ordre de la fiche, en sections Markdown (##) pour servir de référence au LLM.
+      Les liens, les ingrédients clés et les formats liés n'y figurent pas. */
   function ficheEnTexte(c) {
     const infos = c.infos || {};
-    const rubrique = (titre, texte, sep) => {
-      texte = HORS_PROMPT.reduce((t, re) => t.replace(re, ''), texte || '').trim();
-      return texte ? `${titre} :${sep}${texte}` : '';   // une rubrique vide (ou vidée) disparaît
-    };
-    const ligne = (titre, texte) => rubrique(titre, texte, ' ');
-    const bloc = (titre, texte) => rubrique(titre, texte, '\n');
-    const autres = liste => liste.map(a => bloc(a.titre, enTexte(a.html)));
+    const nettoyer = texte => HORS_PROMPT.reduce((t, re) => t.replace(re, ''), texte || '').trim();
+    const section = (titre, texte) => { texte = nettoyer(texte); return texte ? `## ${titre}\n\n${texte}` : ''; };   // une section vide disparaît
+    const repere = (titre, texte) => texte ? `- ${titre} : ${texte}` : '';
+    const autres = liste => liste.map(a => section(a.titre, enTexte(a.html)));
     const reflexion = (c.autres || []).filter(a => /^Éléments/.test(a.titre));
     const parties = c.type === 'recette'
       ? [
-          ligne('Résumé', c.resume),
-          ligne('Pourquoi faire', enTexte(c.pourquoi)),
-          [
-            ligne('Durée indicative', infos.duree ? dureeTxt(infos.duree) : 'variable'),
-            ligne('Taille du groupe', tailleTxt(c.taille).toLowerCase()),
-            ligne('Complexité de mise en œuvre', c.complexite && COMPLEXITES[c.complexite - 1].label.toLowerCase()),
-            ligne('Matériel', infos.materiel || 'aucun matériel particulier'),
-            ligne('Lieu', infos.lieu)
-          ].filter(Boolean).join('\n'),
-          bloc('L’essentiel', enTexte(c.essentiel)),
-          bloc('Astuces, conseils, points de vigilance', enTexte(c.astuces)),
-          bloc('La méthode en détail (synthèse des ressources)', enTexte(SYNTHESES[c.slug])),
-          bloc('La méthode en détail (sources)', enTexte(c.detail)),
-          bloc('Variantes', enTexte(c.variantes)),
-          ligne('Ingrédients clés', infos.ingredients),
-          ligne('Formats liés', c.formats),
+          section('Résumé', c.resume),
+          section('Pourquoi faire', enTexte(c.pourquoi)),
+          section('Repères pratiques', [
+            repere('Durée indicative', infos.duree ? dureeTxt(infos.duree) : 'variable'),
+            repere('Taille du groupe', tailleTxt(c.taille).toLowerCase()),
+            repere('Complexité de mise en œuvre', c.complexite && COMPLEXITES[c.complexite - 1].label.toLowerCase()),
+            repere('Matériel', infos.materiel || 'aucun matériel particulier'),
+            repere('Lieu', infos.lieu)
+          ].filter(Boolean).join('\n')),
+          section('L’essentiel', enTexte(c.essentiel)),
+          section('Astuces, conseils, points de vigilance', enTexte(c.astuces)),
+          section('La méthode en détail', enTexte(SYNTHESES[c.slug])),
+          section('Variantes', enTexte(c.variantes)),
           ...autres(c.autres || []),
-          bloc('Experts, communauté de pratique', enTexte(c.experts))
+          section('Experts, communauté de pratique', enTexte(c.experts))
         ]
       : [
-          ligne('Résumé', c.resume),
-          bloc('Questions à se poser', enTexte(c.questions)),
+          section('Résumé', c.resume),
+          section('Questions à se poser', enTexte(c.questions)),
           ...autres(reflexion),
-          bloc('Stratégies', enTexte(c.strategies)),
-          bloc('Exemples', enTexte(c.exemples)),
+          section('Stratégies', enTexte(c.strategies)),
+          section('Exemples', enTexte(c.exemples)),
           ...autres((c.autres || []).filter(a => !reflexion.includes(a))),
-          bloc('Experts et communautés de pratique', enTexte(c.experts))
+          section('Experts et communautés de pratique', enTexte(c.experts))
         ];
     return parties.filter(Boolean).join('\n\n');
   }
