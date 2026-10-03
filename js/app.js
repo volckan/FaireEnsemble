@@ -484,6 +484,7 @@
     const fav = el.fiche.querySelector('[data-action="fav"]');
     fav.setAttribute('aria-pressed', favoris.has(c.slug));
     fav.title = favoris.has(c.slug) ? 'Retirer des favoris' : 'Ajouter aux favoris';
+    el.fiche.querySelector('.btn-prompt').hidden = c.type !== 'recette';   // le bouton « Prompt » n'a de sens que pour une recette
     document.title = `${c.titre} · Faire Ensemble`;
     if (!el.fiche.open) {
       focusAvant = document.activeElement;
@@ -543,6 +544,7 @@
   }
 
   function sectionPrompt(c) {
+    if (c.type !== 'recette') return '';   // pas de prompt pour les cartes « ingrédient »
     const defaut = dureeCarte(c);
     const duree = promptSaisi.duree || defaut;
     const intro = c.type === 'recette'
@@ -740,6 +742,7 @@
   /** Bouton de la barre : amène à la section et place le curseur sur le premier champ à remplir. */
   function allerAuPrompt() {
     const form = $('.prompt-form');
+    if (!form) return;
     const vide = [form.elements.sujet, form.elements.publicCible].find(ch => !ch.value.trim());
     (vide || form.querySelector('[type="submit"]')).focus({ preventScroll: true });
     $('.f-prompt').scrollIntoView({ block: 'start', behavior: 'smooth' });
