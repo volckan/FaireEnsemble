@@ -153,6 +153,7 @@
         <button class="btn btn-icon" type="button" data-action="suiv" title="Carte suivante (→)" aria-label="Carte suivante"><svg class="i"><use href="#i-right"/></svg></button>
       </div>
       <div class="fiche-actions">
+        <button class="btn btn-ghost btn-animer" type="button" data-action="animer" title="Mode animation : l’essentiel en grand et un minuteur"><svg class="i" aria-hidden="true"><use href="#i-play"/></svg><span class="lbl">Animer</span></button>
         <button class="btn btn-ghost btn-deroule" type="button" data-action="deroule" title="Ajouter au déroulé" aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg><span class="lbl">Déroulé</span></button>
         <button class="btn btn-ghost btn-prompt" type="button" data-action="prompt" title="Préparer un prompt pour un assistant IA"><svg class="i" aria-hidden="true"><use href="#i-sparkle"/></svg><span class="lbl">Prompt</span></button>
         <button class="btn btn-icon fav-toggle" type="button" data-action="fav" title="Ajouter aux favoris" aria-label="Ajouter aux favoris" aria-pressed="false"><svg class="i"><use href="#i-star"/></svg></button>
@@ -177,6 +178,7 @@
         <li>Ouvrez une carte pour voir l’essentiel, les astuces et les formats liés. Chaque fiche a sa propre adresse, peut être imprimée et ajoutée à vos favoris.</li>
         <li>Le titre <strong>La méthode en détail</strong> (replié par défaut) déplie une synthèse de ce qu’expliquent les liens cités par la carte, suivie de ces liens, pour avoir l’explication détaillée de la méthode sans quitter l’application.</li>
         <li>En bas de chaque fiche recette (bouton <strong>Prompt</strong> en haut de la fiche), la section <strong>Prompt</strong> prépare, à partir de votre sujet, de votre public et de la durée souhaitée, un texte à coller dans un assistant IA pour obtenir un déroulé détaillé de l’activité. Sous le bouton, un lien ouvre un <strong>exemple de réponse</strong> obtenu pour un même cas d’usage, afin de se faire une idée du résultat.</li>
+        <li>Le bouton <strong>Animer</strong> d’une fiche ouvre le <strong>mode animation</strong> : l’essentiel en grands caractères, un minuteur réglé sur la durée de la carte (modifiable, avec signal sonore à la fin) et le plein écran, pour un téléphone posé sur la table ou une projection.</li>
         <li>Le bouton <strong>Déroulé</strong> (barre du haut) compose une séance : ajoutez des cartes avec le bouton <strong>+</strong>, ordonnez-les, ajustez les durées, puis copiez, imprimez ou générez le prompt du conducteur complet. Chaque fiche propose aussi des <strong>enchaînements</strong> : quoi jouer avant, quoi jouer après.</li>
         <li>Raccourcis : <kbd>/</kbd> rechercher, <kbd>←</kbd> <kbd>→</kbd> naviguer entre les fiches, <kbd>Échap</kbd> fermer.</li>
       </ul>
@@ -188,6 +190,40 @@
       <p>Cette application est une adaptation de ces contenus : les contenus adaptés (textes, illustrations, classement par objectifs) sont diffusés sous la même licence CC BY-SA, et le code de l’application sous licence MIT. Elle est indépendante et n’est ni produite ni approuvée par Métacartes.</p>
       <p class="note">Les <strong>objectifs</strong> (« Je cherche à… ») et les tranches de durée sont un classement ajouté pour faciliter la recherche ; ils ne figurent pas sur les cartes d’origine. De même, les <strong>synthèses des ressources</strong> sont des résumés rédigés pour cette application à partir des liens cités par les cartes ; elles ne proviennent pas des cartes d’origine et peuvent comporter des approximations : les sources citées font foi. Pour les quelques cartes qui ne citent aucun lien, les sources ont été choisies pour cette application.</p>
       <p>Les cartes ont été conçues pour être utilisées en papier : <a href="https://www.metacartes.cc/produit/metacartes-faire-ensemble/" target="_blank" rel="noopener">offrez-vous le jeu</a> pour une meilleure expérience et pour soutenir le projet.</p>
+    </div>
+  </dialog>
+
+  <!-- Mode animation -->
+  <dialog class="animation" id="animation" aria-labelledby="anim-titre">
+    <div class="anim-bar">
+      <h2 class="anim-titre" id="anim-titre"></h2>
+      <div class="anim-outils">
+        <button class="btn btn-icon" type="button" data-action="anim-essentiel" title="Afficher ou masquer les astuces" aria-label="Afficher ou masquer les astuces"><svg class="i" aria-hidden="true"><use href="#i-bulb"/></svg></button>
+        <button class="btn btn-icon" type="button" data-action="anim-plein-ecran" title="Plein écran (F)" aria-label="Plein écran"><svg class="i" aria-hidden="true"><use href="#i-expand"/></svg></button>
+        <button class="btn btn-icon" type="button" data-action="fermer-anim" title="Quitter (Échap)" aria-label="Quitter le mode animation"><svg class="i" aria-hidden="true"><use href="#i-x"/></svg></button>
+      </div>
+    </div>
+    <div class="anim-corps">
+      <div class="anim-texte">
+        <p class="anim-pourquoi"></p>
+        <div class="anim-essentiel prose"></div>
+        <div class="anim-astuces-bloc" hidden><h3>Astuces, conseils, points de vigilance</h3><div class="anim-astuces prose"></div></div>
+      </div>
+      <aside class="anim-minuteur" aria-label="Minuteur">
+        <div class="anim-temps" id="anim-temps" role="timer" aria-live="off">00:00</div>
+        <div class="anim-barre" aria-hidden="true"><i></i></div>
+        <p class="anim-fin" aria-live="assertive">Temps écoulé</p>
+        <div class="anim-controles">
+          <button class="btn btn-primary btn-marche" type="button" data-action="anim-marche"><svg class="i" aria-hidden="true"><use href="#i-play"/></svg><span class="lbl">Démarrer</span></button>
+          <button class="btn btn-outline" type="button" data-action="anim-reset" title="Remettre à zéro"><svg class="i" aria-hidden="true"><use href="#i-reset"/></svg><span class="lbl">Remettre</span></button>
+        </div>
+        <div class="anim-reglage">
+          <button class="btn btn-outline" type="button" data-action="anim-moins" aria-label="Une minute de moins">−1 min</button>
+          <label>Durée <input type="number" id="anim-duree" min="1" max="999" inputmode="numeric" aria-label="Durée du minuteur en minutes"> min</label>
+          <button class="btn btn-outline" type="button" data-action="anim-plus" aria-label="Une minute de plus">+1 min</button>
+        </div>
+        <p class="anim-aide">Espace : démarrer ou mettre en pause · F : plein écran</p>
+      </aside>
     </div>
   </dialog>
 
@@ -255,6 +291,9 @@
       <symbol id="i-dice" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8.5" cy="8.5" r="1.2" class="f"/><circle cx="15.5" cy="15.5" r="1.2" class="f"/><circle cx="15.5" cy="8.5" r="1.2" class="f"/><circle cx="8.5" cy="15.5" r="1.2" class="f"/><circle cx="12" cy="12" r="1.2" class="f"/></symbol>
       <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></symbol>
       <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+      <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z" class="f"/></symbol>
+      <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="4.5" width="4" height="15" rx="1" class="f"/><rect x="14" y="4.5" width="4" height="15" rx="1" class="f"/></symbol>
+      <symbol id="i-expand" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
       <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
       <symbol id="i-up" viewBox="0 0 24 24"><path d="m6 15 6-6 6 6"/></symbol>
       <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>

@@ -221,6 +221,7 @@
     recherche: $('#recherche'), tri: $('#tri'), grille: $('#grille'), vide: $('#vide'), compteur: $('#compteur'),
     actifs: $('#filtres-actifs'), nbFiltres: $('#nb-filtres'), filtres: $('#filtres'), fondFiltres: $('#filtres-fond'),
     fiche: $('#fiche'), ficheContenu: $('#fiche-contenu'), fichePos: $('#fiche-pos'), apropos: $('#apropos'), qr: $('#qr'), qrCode: $('#qr-code'), qrUrl: $('#qr-url'), toast: $('#toast'),
+    anim: $('#animation'), animTemps: $('#anim-temps'), animDuree: $('#anim-duree'),
     deroule: $('#deroule'), derouleListe: $('#deroule-liste'), derouleTotal: $('#deroule-total'), derouleSugg: $('#deroule-suggestions'), derouleActions: $('#deroule-actions'), nbDeroule: $('#nb-deroule')
   };
 
@@ -321,10 +322,14 @@
     rendreActifs();
     el.grille.innerHTML = resultats.map(tuile).join('');
     el.vide.hidden = resultats.length > 0;
-    const total = CARTES.length;
-    el.compteur.innerHTML = resultats.length === total
-      ? `<strong>${total}</strong> cartes`
-      : `<strong>${resultats.length}</strong> carte${resultats.length > 1 ? 's' : ''} sur ${total}`;
+    // « 52 recettes » plutôt que « 52 cartes » quand un seul type est filtré
+    const typeSeul = etat.types.size === 1 ? [...etat.types][0] : null;
+    const total = typeSeul ? CARTES.filter(c => c.type === typeSeul).length : CARTES.length;
+    const nom = { recette: 'recette', ingredient: 'ingrédient' }[typeSeul] || 'carte';
+    const n = resultats.length;
+    el.compteur.innerHTML = n === total
+      ? `<strong>${total}</strong> ${nom}${total > 1 ? 's' : ''}`
+      : `<strong>${n}</strong> ${nom}${n > 1 ? 's' : ''} sur ${total}`;
     etatVersUrl();
   }
 
@@ -538,6 +543,7 @@
     fav.title = favoris.has(c.slug) ? 'Retirer des favoris' : 'Ajouter aux favoris';
     el.fiche.querySelector('.btn-prompt').hidden = c.type !== 'recette';   // le bouton « Prompt » n'a de sens que pour une recette
     majBoutonDeroule(c);
+    el.fiche.querySelector('.btn-animer').hidden = c.type !== 'recette';
     document.title = `${c.titre} · Faire Ensemble`;
     if (!el.fiche.open) {
       focusAvant = document.activeElement;
@@ -794,11 +800,11 @@
 
   /** Bouton de la barre : amène à la section et place le curseur sur le premier champ à remplir. */
   function allerAuPrompt() {
-    const form = $('.prompt-form');
+    const form = el.ficheContenu.querySelector('.prompt-form');   // (le panneau Déroulé a son propre formulaire)
     if (!form) return;
     const vide = [form.elements.sujet, form.elements.publicCible].find(ch => !ch.value.trim());
     (vide || form.querySelector('[type="submit"]')).focus({ preventScroll: true });
-    $('.f-prompt').scrollIntoView({ block: 'start', behavior: 'smooth' });
+    el.ficheContenu.querySelector('.f-prompt').scrollIntoView({ block: 'start', behavior: 'smooth' });
   }
 
   function noterSaisie(champ) {
@@ -1045,6 +1051,129 @@
     $('#deroule-prompt-sortie').scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   }
 
+  /* ========================================================= Mode animation */
+
+  // Vue plein écran d'une recette (l'essentiel en gros caractères) avec un minuteur réglé sur la durée de la carte.
+  // Le minuteur tourne sur l'horloge (pas sur un compteur) : il reste juste même si l'onglet est mis en veille.
+  const minuteur = { total: 0, restant: 0, fin: null, tick: null, carte: null, audio: null, veille: null };
+  const mmss = ms => { const s = Math.max(0, Math.round(ms / 1000)); return `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`; };
+
+  function ouvrirAnimation(c) {
+    if (minuteur.carte !== c.slug) {   // nouvelle carte : minuteur réglé sur sa durée
+      arreterMinuteur();
+      minuteur.carte = c.slug;
+      minuteur.total = minuteur.restant = dureeDefaut(c) * 60000;
+    }
+    el.anim.querySelector('.anim-titre').textContent = c.titre;
+    el.anim.querySelector('.anim-pourquoi').innerHTML = c.pourquoi || '';
+    el.anim.querySelector('.anim-essentiel').innerHTML = c.essentiel ? etapes(c.essentiel) : '';
+    el.anim.querySelector('.anim-astuces').innerHTML = c.astuces ? etapes(c.astuces) : '';
+    el.anim.querySelector('.anim-astuces-bloc').hidden = !c.astuces;
+    el.animDuree.value = Math.round(minuteur.total / 60000);
+    el.anim.classList.remove('fini');
+    afficherMinuteur();
+    el.anim.showModal();
+    document.body.classList.add('no-scroll');
+  }
+  function fermerAnimation() {
+    if (document.fullscreenElement === el.anim) document.exitFullscreen().catch(() => {});
+    el.anim.close();
+    if (!el.fiche.open) document.body.classList.remove('no-scroll');
+  }
+
+  function afficherMinuteur() {
+    const enCours = !!minuteur.fin;
+    el.animTemps.textContent = mmss(minuteur.restant);
+    el.anim.querySelector('.anim-barre i').style.width = `${minuteur.total ? 100 - 100 * minuteur.restant / minuteur.total : 0}%`;
+    const b = el.anim.querySelector('[data-action="anim-marche"]');
+    b.querySelector('.lbl').textContent = enCours ? 'Pause' : minuteur.restant < minuteur.total && minuteur.restant > 0 ? 'Reprendre' : 'Démarrer';
+    b.querySelector('use').setAttribute('href', enCours ? '#i-pause' : '#i-play');
+    el.anim.classList.toggle('en-cours', enCours);
+    // rappel discret dans la barre de la fiche
+    const lbl = el.fiche.querySelector('.btn-animer .lbl');
+    lbl.textContent = enCours ? mmss(minuteur.restant) : 'Animer';
+  }
+  function demarrerMinuteur() {
+    if (minuteur.restant <= 0) minuteur.restant = minuteur.total;
+    minuteur.fin = Date.now() + minuteur.restant;
+    el.anim.classList.remove('fini');
+    clearInterval(minuteur.tick);
+    minuteur.tick = setInterval(() => {
+      minuteur.restant = minuteur.fin - Date.now();
+      if (minuteur.restant <= 0) { minuteur.restant = 0; terminerMinuteur(); }
+      afficherMinuteur();
+    }, 250);
+    garderEcranAllume(true);
+    afficherMinuteur();
+  }
+  function mettreEnPause() {
+    if (!minuteur.fin) return;
+    minuteur.restant = Math.max(0, minuteur.fin - Date.now());
+    minuteur.fin = null;
+    clearInterval(minuteur.tick);
+    garderEcranAllume(false);
+    afficherMinuteur();
+  }
+  function arreterMinuteur() {
+    mettreEnPause();
+    minuteur.restant = minuteur.total;
+    el.anim.classList.remove('fini');
+    afficherMinuteur();
+  }
+  function reglerMinuteur(minutes) {
+    const m = Math.min(999, Math.max(1, Math.round(minutes) || 1));
+    const enCours = !!minuteur.fin;
+    mettreEnPause();
+    minuteur.total = minuteur.restant = m * 60000;
+    el.animDuree.value = m;
+    if (enCours) demarrerMinuteur(); else afficherMinuteur();
+  }
+  function ajusterMinuteur(deltaMin) {
+    // ajoute ou retire du temps sans repartir de zéro
+    const enCours = !!minuteur.fin;
+    mettreEnPause();
+    minuteur.restant = Math.max(0, minuteur.restant + deltaMin * 60000);
+    minuteur.total = Math.max(minuteur.total + deltaMin * 60000, 60000, minuteur.restant);
+    el.animDuree.value = Math.round(minuteur.total / 60000);
+    if (enCours && minuteur.restant > 0) demarrerMinuteur(); else afficherMinuteur();
+  }
+  function terminerMinuteur() {
+    clearInterval(minuteur.tick);
+    minuteur.fin = null;
+    garderEcranAllume(false);
+    el.anim.classList.add('fini');
+    try { navigator.vibrate && navigator.vibrate([300, 150, 300, 150, 600]); } catch { /* ignoré */ }
+    sonner();
+  }
+  /** Trois bips (Web Audio : pas de fichier son à charger). L'audio n'est créé qu'après un geste de l'utilisateur. */
+  function sonner() {
+    try {
+      const ctx = minuteur.audio || (minuteur.audio = new (window.AudioContext || window.webkitAudioContext)());
+      [0, 0.35, 0.7].forEach(t => {
+        const o = ctx.createOscillator(), g = ctx.createGain();
+        o.type = 'sine'; o.frequency.value = 880;
+        g.gain.setValueAtTime(0.0001, ctx.currentTime + t);
+        g.gain.exponentialRampToValueAtTime(0.4, ctx.currentTime + t + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + t + 0.3);
+        o.connect(g).connect(ctx.destination);
+        o.start(ctx.currentTime + t); o.stop(ctx.currentTime + t + 0.32);
+      });
+    } catch { /* pas d'audio */ }
+  }
+  /** Empêche l'écran de s'éteindre pendant que le minuteur tourne (téléphone posé sur la table, projection). */
+  async function garderEcranAllume(oui) {
+    try {
+      if (oui && !minuteur.veille && navigator.wakeLock) minuteur.veille = await navigator.wakeLock.request('screen');
+      if (!oui && minuteur.veille) { await minuteur.veille.release(); minuteur.veille = null; }
+    } catch { minuteur.veille = null; }
+  }
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && minuteur.fin) garderEcranAllume(true); });
+
+  function basculerPleinEcran() {
+    if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+    else if (el.anim.requestFullscreen) el.anim.requestFullscreen().catch(() => {});
+  }
+
   /* ============================================================ Utilitaires */
 
   let toastTimer;
@@ -1163,6 +1292,14 @@
 
     const action = t.closest('[data-action]')?.dataset.action;
     switch (action) {
+      case 'animer': if (courante) ouvrirAnimation(courante); return;
+      case 'fermer-anim': fermerAnimation(); return;
+      case 'anim-marche': if (minuteur.fin) mettreEnPause(); else { if (minuteur.audio && minuteur.audio.state === 'suspended') minuteur.audio.resume(); demarrerMinuteur(); } return;
+      case 'anim-reset': arreterMinuteur(); return;
+      case 'anim-plus': ajusterMinuteur(1); return;
+      case 'anim-moins': ajusterMinuteur(-1); return;
+      case 'anim-plein-ecran': basculerPleinEcran(); return;
+      case 'anim-essentiel': el.anim.classList.toggle('sans-astuces'); return;
       case 'deroule': if (courante) basculerDeroule(courante.slug); return;
       case 'ouvrir-deroule': ouvrirDeroule(); return;
       case 'fermer-deroule': el.deroule.close(); return;
@@ -1195,6 +1332,13 @@
     if (t === el.apropos && appui === el.apropos) el.apropos.close();
     if (t === el.qr && appui === el.qr) el.qr.close();
     if (t === el.deroule && appui === el.deroule) el.deroule.close();
+  });
+
+  el.anim.addEventListener('cancel', e => { e.preventDefault(); fermerAnimation(); });
+  el.animDuree.addEventListener('change', () => reglerMinuteur(Number(el.animDuree.value)));
+  el.anim.addEventListener('keydown', e => {
+    if (e.key === ' ' && !/^(INPUT|TEXTAREA)$/.test(document.activeElement?.tagName)) { e.preventDefault(); el.anim.querySelector('[data-action="anim-marche"]').click(); }
+    if (e.key === 'f' || e.key === 'F') basculerPleinEcran();
   });
 
   el.deroule.addEventListener('change', e => {

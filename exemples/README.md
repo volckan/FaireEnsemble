@@ -1,7 +1,7 @@
 # Exemples de prompts et de réponses
 
 Ce dossier sert à juger la qualité des prompts générés par l’application, à partir d’un même cas d’usage
-appliqué aux 52 cartes « recette » (dans l’ordre de l’accueil, cartes 1 à 52).
+appliqué aux cartes « recette » (dans l’ordre de l’accueil).
 
 - **Sujet de discussion ou problématique** : « Comment améliorer les interactions dans une formation d’adultes ? »
 - **Public qui jouera l’activité** : « Formateurs d’adultes »
@@ -12,8 +12,12 @@ Pour chaque carte :
 - `prompts/<nn>-<slug>.md` : le prompt exactement tel que l’application le génère (bouton « Générer le prompt »).
 - `reponses/<nn>-<slug>.md` : la réponse produite par un assistant IA à partir de ce seul prompt, sans retouche.
 
-Les réponses sont des exemples bruts, générés automatiquement le 2026-10-03 : elles ne sont ni relues ni validées
+Les réponses sont des exemples bruts, générés automatiquement : elles ne sont ni relues ni validées
 par un·e facilitateur·rice et peuvent contenir des approximations.
+
+Pour régénérer l’index ci-dessous et `js/exemples.js` après avoir ajouté ou modifié des fichiers :
+`node outils/generer-exemples.js`. Pour réextraire les prompts après une modification du générateur de prompt :
+`node outils/extraire-prompts.js`.
 
 | N° | Carte | Prompt | Réponse |
 |---:|---|---|---|

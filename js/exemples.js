@@ -1,5 +1,5 @@
 /* Exemples de réponses aux prompts (dossier exemples/) : un même cas d'usage appliqué à chaque carte recette.
-   Fichier généré avec le dossier exemples ; la page exemple.html affiche la réponse d'une carte. */
+   Fichier GÉNÉRÉ par outils/generer-exemples.js ; la page exemple.html affiche la réponse d'une carte. */
 
 window.EXEMPLES = {
   sujet: "Comment améliorer les interactions dans une formation d’adultes ?",
