@@ -220,7 +220,8 @@
     type: $('#f-type'), sansMateriel: $('#f-sans-materiel'), favoris: $('#f-favoris'), nbFavoris: $('#nb-favoris'),
     recherche: $('#recherche'), tri: $('#tri'), grille: $('#grille'), vide: $('#vide'), compteur: $('#compteur'),
     actifs: $('#filtres-actifs'), nbFiltres: $('#nb-filtres'), filtres: $('#filtres'), fondFiltres: $('#filtres-fond'),
-    fiche: $('#fiche'), ficheContenu: $('#fiche-contenu'), fichePos: $('#fiche-pos'), apropos: $('#apropos'), qr: $('#qr'), qrCode: $('#qr-code'), qrUrl: $('#qr-url'), toast: $('#toast')
+    fiche: $('#fiche'), ficheContenu: $('#fiche-contenu'), fichePos: $('#fiche-pos'), apropos: $('#apropos'), qr: $('#qr'), qrCode: $('#qr-code'), qrUrl: $('#qr-url'), toast: $('#toast'),
+    deroule: $('#deroule'), derouleListe: $('#deroule-liste'), derouleTotal: $('#deroule-total'), derouleSugg: $('#deroule-suggestions'), derouleActions: $('#deroule-actions'), nbDeroule: $('#nb-deroule')
   };
 
   const icone = (id, cls = 'i') => `<svg class="${cls}" aria-hidden="true"><use href="#i-${id}"/></svg>`;
@@ -290,6 +291,7 @@
         </div>
       </a>
       <span class="tile-num" title="Carte ${i + 1} sur ${resultats.length}" aria-hidden="true">${i + 1}</span>
+      ${c.type === 'recette' ? `<button type="button" class="ajout" data-ajout="${c.slug}" aria-pressed="${dansDeroule(c.slug)}" aria-label="${dansDeroule(c.slug) ? 'Retirer du' : 'Ajouter au'} déroulé : ${esc(c.titre)}" title="${dansDeroule(c.slug) ? 'Retirer du déroulé' : 'Ajouter au déroulé'}">${icone('plus')}</button>` : ''}
       <button type="button" class="fav" data-fav="${c.slug}" aria-pressed="${fav}" aria-label="${fav ? 'Retirer des' : 'Ajouter aux'} favoris : ${esc(c.titre)}" title="${fav ? 'Retirer des favoris' : 'Ajouter aux favoris'}">${icone('star')}</button>
     </article>`;
   }
@@ -482,6 +484,7 @@
           section('Variantes', 'shuffle', prose(c.variantes && etapes(c.variantes))),
           section('Ingrédients clés', 'flask', infos.ingredients ? prose(`<p>${esc(infos.ingredients)}</p>`) : '', 'f-ingredients'),
           section('Formats liés', 'compass', c.formats ? formatsLies(c.formats, c.slug) : '', 'f-formats'),
+          sectionEnchainements(c),
           autres,
           section('Experts, communauté de pratique', 'users', prose(c.experts))
         ]
@@ -534,6 +537,7 @@
     fav.setAttribute('aria-pressed', favoris.has(c.slug));
     fav.title = favoris.has(c.slug) ? 'Retirer des favoris' : 'Ajouter aux favoris';
     el.fiche.querySelector('.btn-prompt').hidden = c.type !== 'recette';   // le bouton « Prompt » n'a de sens que pour une recette
+    majBoutonDeroule(c);
     document.title = `${c.titre} · Faire Ensemble`;
     if (!el.fiche.open) {
       focusAvant = document.activeElement;
@@ -814,6 +818,233 @@
     champ.focus();
   }
 
+  /* =============================================================== Déroulé */
+
+  // Le déroulé : une suite ordonnée de cartes avec une durée (en minutes) pour chacune. Il est conservé dans le
+  // navigateur et recopié dans l'adresse (?deroule=slug:min,…) pour être partagé par lien.
+  const ETAPES_SEANCE = ['accueillir', 'energiser', 'parole', 'explorer', 'idees', 'decider', 'evaluer'];
+  const etape = c => { const i = c.objectifs.map(o => ETAPES_SEANCE.indexOf(o)).filter(i => i >= 0); return i.length ? Math.min(...i) : 3; };
+  const dureeDefaut = c => c.plage ? Math.max(5, Math.round(c.plage[1] === Infinity ? c.plage[0] * 1.5 : c.plage[1])) : 30;
+  const minutesTxt = m => m >= 60 ? `${Math.floor(m / 60)} h${m % 60 ? ` ${String(m % 60).padStart(2, '0')}` : ''}` : `${m} min`;
+
+  let deroule = [];
+  function lireDeroule() {
+    const brut = new URLSearchParams(location.search).get('deroule');
+    const source = brut != null ? brut.split(',').map(x => { const [slug, min] = x.split(':'); return { slug, min: Number(min) }; }) : stock.get('fe-deroule', []);
+    deroule = source.filter(x => PAR_SLUG[x.slug] && PAR_SLUG[x.slug].type === 'recette')
+      .map(x => ({ slug: x.slug, min: x.min > 0 && x.min < 1000 ? Math.round(x.min) : dureeDefaut(PAR_SLUG[x.slug]) }));
+  }
+  function sauverDeroule() {
+    stock.set('fe-deroule', deroule);
+    const p = new URLSearchParams(location.search);
+    if (deroule.length) p.set('deroule', deroule.map(x => `${x.slug}:${x.min}`).join(',')); else p.delete('deroule');
+    const q = p.toString().replace(/%2C/g, ',').replace(/%3A/g, ':');
+    history.replaceState(history.state, '', location.pathname + (q ? `?${q}` : '') + location.hash);
+    el.nbDeroule.textContent = deroule.length;
+    el.nbDeroule.hidden = !deroule.length;
+    document.querySelectorAll('[data-ajout]').forEach(b => majBoutonAjout(b, b.dataset.ajout));
+    if (courante) majBoutonDeroule(courante);
+  }
+  const dansDeroule = slug => deroule.some(x => x.slug === slug);
+  const dureeTotale = () => deroule.reduce((n, x) => n + x.min, 0);
+
+  function majBoutonAjout(b, slug) {
+    const dedans = dansDeroule(slug);
+    b.setAttribute('aria-pressed', dedans);
+    b.title = dedans ? 'Retirer du déroulé' : 'Ajouter au déroulé';
+    b.setAttribute('aria-label', `${dedans ? 'Retirer du' : 'Ajouter au'} déroulé : ${PAR_SLUG[slug].titre}`);
+  }
+  function majBoutonDeroule(c) {
+    const b = el.fiche.querySelector('.btn-deroule');
+    b.hidden = c.type !== 'recette';
+    b.setAttribute('aria-pressed', dansDeroule(c.slug));
+    b.title = dansDeroule(c.slug) ? 'Retirer du déroulé' : 'Ajouter au déroulé';
+    b.querySelector('.lbl').textContent = dansDeroule(c.slug) ? 'Dans le déroulé' : 'Déroulé';
+  }
+
+  function basculerDeroule(slug) {
+    const c = PAR_SLUG[slug];
+    if (!c || c.type !== 'recette') return;
+    if (dansDeroule(slug)) { deroule = deroule.filter(x => x.slug !== slug); toast(`« ${c.titre} » retirée du déroulé`); }
+    else { deroule.push({ slug, min: dureeDefaut(c) }); toast(`« ${c.titre} » ajoutée au déroulé (${deroule.length})`); }
+    sauverDeroule();
+    if (el.deroule.open) rendreDeroule();
+  }
+
+  /** Cartes à proposer avant (sens -1) ou après (sens +1) une carte : formats liés d'abord, puis l'étape
+      logique d'une séance (accueillir → énergiser → parole → explorer → idées → décider → évaluer). */
+  function suggerer(c, sens, exclure = new Set(), n = 3) {
+    const lies = new Set();
+    (c.formats || '').split(/[,;]/).map(x => x.trim()).filter(Boolean).forEach(x => { const k = trouverCarte(x, c.slug); if (k) lies.add(k.slug); });
+    const e = etape(c);
+    return CARTES.filter(k => k.type === 'recette' && k.slug !== c.slug && !exclure.has(k.slug))
+      .map(k => {
+        let score = 0;
+        const d = (etape(k) - e) * sens;   // > 0 : dans le bon sens
+        if (sens < 0 && d <= 0) return { k, score: 0 };   // « avant » : seulement des étapes antérieures
+        if (lies.has(k.slug)) score += 5;
+        else if ((k.formats || '').toUpperCase().includes(c.titre.toUpperCase())) score += 4;
+        score += d === 1 ? 3 : d === 2 ? 2 : d > 2 ? 1 : d === 0 ? 0 : -2;
+        if (k.taille.some(t => c.taille.includes(t))) score += 1;
+        if (sens < 0 && etape(k) <= 1 && k.plage && k.plage[1] <= 15) score += 1;   // ouverture courte
+        if (sens > 0 && e >= 5 && etape(k) === 6) score += 1;                      // après décider : évaluer
+        return { k, score };
+      })
+      .filter(x => x.score > 0)
+      .sort((a, b) => b.score - a.score || alpha(a.k, b.k))
+      .slice(0, n).map(x => x.k);
+  }
+
+  const chipCarte = (k, ajout) => `<span class="related-item">
+      <a href="#carte/${k.slug}"><img src="${k.image}" alt="">${esc(k.titre)}</a>
+      ${ajout ? `<button type="button" class="chip-ajout" data-ajout="${k.slug}" aria-pressed="${dansDeroule(k.slug)}" title="Ajouter au déroulé">${icone('plus')}</button>` : ''}
+    </span>`;
+
+  /** Section « Enchaînements suggérés » de la fiche. */
+  function sectionEnchainements(c) {
+    if (c.type !== 'recette') return '';
+    const avant = suggerer(c, -1), apres = suggerer(c, 1);
+    if (!avant.length && !apres.length) return '';
+    const bloc = (titre, liste) => liste.length ? `<div class="enchainement"><h4>${titre}</h4><div class="related">${liste.map(k => chipCarte(k, true)).join('')}</div></div>` : '';
+    return `<section class="f-sec f-enchainements"><h3>${icone('route')}Enchaînements suggérés</h3>
+      <p class="muted-note">Des formats qui s’articulent bien avec celui-ci, d’après les formats liés et la progression d’une séance (accueillir, énergiser, explorer, décider, évaluer…). Le bouton + les ajoute à votre déroulé.</p>
+      ${bloc('Pour ouvrir, avant cette activité', avant)}${bloc('Pour continuer, après cette activité', apres)}
+    </section>`;
+  }
+
+  function rendreDeroule() {
+    const total = dureeTotale();
+    el.derouleTotal.textContent = deroule.length ? `${deroule.length} activité${deroule.length > 1 ? 's' : ''} · ${minutesTxt(total)}` : 'Aucune activité pour l’instant';
+    el.derouleListe.innerHTML = deroule.length ? deroule.map((x, i) => {
+      const c = PAR_SLUG[x.slug];
+      return `<li class="d-item">
+        <span class="d-num">${i + 1}</span>
+        <a class="d-carte" href="#carte/${c.slug}"><img src="${c.image}" alt=""><span><strong>${esc(c.titre)}</strong><small>${esc(c.resume)}</small></span></a>
+        <label class="d-duree"><input type="number" min="1" max="999" value="${x.min}" data-dmin="${i}" aria-label="Durée en minutes de ${esc(c.titre)}"><span>min</span></label>
+        <span class="d-actions">
+          <button type="button" class="btn btn-icon" data-dmonter="${i}" title="Monter" aria-label="Monter ${esc(c.titre)}" ${i === 0 ? 'disabled' : ''}>${icone('up')}</button>
+          <button type="button" class="btn btn-icon" data-ddescendre="${i}" title="Descendre" aria-label="Descendre ${esc(c.titre)}" ${i === deroule.length - 1 ? 'disabled' : ''}>${icone('down')}</button>
+          <button type="button" class="btn btn-icon" data-dretirer="${i}" title="Retirer" aria-label="Retirer ${esc(c.titre)}">${icone('x')}</button>
+        </span>
+      </li>`;
+    }).join('') : `<li class="d-vide">Ajoutez des activités depuis les cartes (bouton <strong>+</strong> sur une carte ou <strong>Déroulé</strong> dans une fiche) pour composer votre séance.</li>`;
+
+    // suggestions : pour ouvrir (si la séance ne commence pas par un accueil ou un énergiseur) et pour continuer
+    const dedans = new Set(deroule.map(x => x.slug));
+    let sugg = '';
+    if (deroule.length) {
+      const premiere = PAR_SLUG[deroule[0].slug], derniere = PAR_SLUG[deroule[deroule.length - 1].slug];
+      const ouvrir = etape(premiere) > 1 ? suggerer(premiere, -1, dedans, 2).filter(k => etape(k) <= 1) : [];
+      const suite = suggerer(derniere, 1, dedans, 3);
+      const bloc = (titre, liste) => liste.length ? `<div class="enchainement"><h4>${titre}</h4><div class="related">${liste.map(k => chipCarte(k, true)).join('')}</div></div>` : '';
+      sugg = bloc('Pour ouvrir la séance', ouvrir) + bloc(`Pour continuer après « ${esc(derniere.titre)} »`, suite);
+    } else {
+      const ouvertures = CARTES.filter(k => k.type === 'recette' && etape(k) <= 1 && k.plage && k.plage[1] <= 15).sort(alpha).slice(0, 4);
+      sugg = `<div class="enchainement"><h4>Pour commencer une séance</h4><div class="related">${ouvertures.map(k => chipCarte(k, true)).join('')}</div></div>`;
+    }
+    el.derouleSugg.innerHTML = sugg;
+    el.derouleActions.hidden = !deroule.length;
+    $('#deroule-prompt-sortie').hidden = true;
+  }
+
+  function ouvrirDeroule() {
+    rendreDeroule();
+    const form = $('#deroule-form');
+    form.elements.sujet.value = promptSaisi.sujet;
+    form.elements.publicCible.value = promptSaisi.publicCible;
+    el.deroule.showModal();
+  }
+
+  /** Le déroulé en texte (copie / partage). */
+  function derouleEnTexte() {
+    const lignes = deroule.map((x, i) => { const c = PAR_SLUG[x.slug]; return `${i + 1}. ${c.titre} – ${minutesTxt(x.min)}\n   ${c.resume}`; });
+    return [`Déroulé – ${deroule.length} activité${deroule.length > 1 ? 's' : ''} – ${minutesTxt(dureeTotale())}`, '', ...lignes, '', `Lien : ${location.origin + location.pathname}?deroule=${deroule.map(x => `${x.slug}:${x.min}`).join(',')}`].join('\n');
+  }
+
+  function imprimerDeroule() {
+    const zone = document.createElement('div');
+    zone.id = 'impression';
+    zone.className = 'impression-deroule';
+    let cumul = 0;
+    const lignes = deroule.map((x, i) => {
+      const c = PAR_SLUG[x.slug], debut = cumul; cumul += x.min;
+      return `<tr><td>${i + 1}</td><td>${minutesTxt(debut).replace(' min', '’')}</td><td><strong>${esc(c.titre)}</strong><br><small>${esc(c.resume)}</small></td><td>${minutesTxt(x.min)}</td><td>${c.objectifs.map(id => esc(OBJ[id].court)).join(', ')}</td><td>${esc(c.infos?.materiel || '—')}</td></tr>`;
+    }).join('');
+    zone.innerHTML = `<header class="f-head"><div><h2>Déroulé de la séance</h2><p class="f-lead">${deroule.length} activité${deroule.length > 1 ? 's' : ''} · ${minutesTxt(dureeTotale())}</p></div></header>
+      <div class="f-sections"><section class="f-sec"><h3>Vue d’ensemble</h3><table class="d-table"><thead><tr><th>N°</th><th>Début</th><th>Activité</th><th>Durée</th><th>Objectifs</th><th>Matériel</th></tr></thead><tbody>${lignes}</tbody></table></section>
+      ${deroule.map((x, i) => { const c = PAR_SLUG[x.slug]; return `<section class="f-sec d-fiche"><h3>${i + 1}. ${esc(c.titre)} · ${minutesTxt(x.min)}</h3>${prose(c.essentiel && etapes(c.essentiel))}${c.astuces ? `<div class="callout callout-astuces"><h3>Astuces, conseils, points de vigilance</h3>${prose(etapes(c.astuces))}</div>` : ''}</section>`; }).join('')}</div>`;
+    document.body.append(zone);
+    document.body.classList.add('printing');
+    const fin = () => { document.body.classList.remove('printing'); zone.remove(); window.removeEventListener('afterprint', fin); };
+    window.addEventListener('afterprint', fin);
+    window.print();
+    setTimeout(() => { if (document.body.contains(zone) && !matchMedia('print').matches) fin(); }, 1000);
+  }
+
+  /** Prompt pour le conducteur complet de la séance. */
+  function construirePromptDeroule(sujet, publicCible) {
+    const liste = items => items.filter(Boolean).map(i => `- ${i}`).join('\n');
+    const cartes = deroule.map(x => ({ ...x, c: PAR_SLUG[x.slug] }));
+    const sequence = cartes.map((x, i) => `${i + 1}. « ${x.c.titre} » – ${minutesTxt(x.min)}`).join('\n');
+    const fiches = cartes.map((x, i) => `## ${i + 1}. Fiche de l’activité « ${x.c.titre} »\n\n` + ficheEnTexte(x.c).replace(/^### /gm, '#### ').replace(/^## /gm, '### ')).join('\n\n');
+    return [
+      'Tu es un·e facilitateur·rice expérimenté·e, spécialiste de l’intelligence collective et de l’animation de réunions et d’ateliers participatifs.',
+      '# Ta mission',
+      `Rédige le conducteur complet d’une séance qui enchaîne les ${cartes.length} activités ci-dessous, dans cet ordre, adaptée au sujet et au public indiqués. Durée totale prévue : ${minutesTxt(dureeTotale())}. Ce conducteur doit permettre à une personne qui n’a jamais animé ces formats de préparer et de conduire toute la séance de bout en bout.`,
+      '# Séquence prévue',
+      sequence,
+      '# Sujet de discussion / problématique',
+      sujet,
+      '# Public qui jouera la séance',
+      publicCible,
+      '# Fiches des activités',
+      fiches,
+      'Les termes en MAJUSCULES désignent d’autres formats d’animation ou des concepts de facilitation.',
+      '# Structure attendue du conducteur',
+      '## 1. Présentation de la séance',
+      liste([
+        'l’intention de la séance face à cette problématique, et ce qu’elle doit produire à la fin ;',
+        'le fil rouge : pourquoi ces activités, dans cet ordre, et comment la production de chacune nourrit la suivante ;',
+        'pourquoi la séance convient à ce public, et les points d’attention qui lui sont propres ;',
+        'l’essentiel en bref : durée totale, nombre de participant·es, rôles (animation, gardien·ne du temps, prise de notes…), matériel et aménagement de l’espace pour toute la séance.'
+      ]),
+      '## 2. Vue d’ensemble',
+      liste([
+        'la préparation en amont : ce qu’il faut préparer, rédiger ou installer avant l’arrivée des participant·es ;',
+        'un tableau récapitulatif de toute la séance : horaire (0:00, 0:15…), durée, activité ou transition, objectif, matériel ;',
+        'le respect de la durée totale et des durées prévues pour chaque activité (pour une fourchette, choisis une durée précise) ; si une activité doit être adaptée à sa durée, explique tes choix.'
+      ]),
+      '## 3. Déroulé détaillé, activité par activité',
+      'Pour chaque activité, dans l’ordre de la séquence :\n' + liste([
+        'l’objectif de l’activité dans la séance, et la transition depuis la précédente : comment reprendre sa récolte, formulation pour passer de l’une à l’autre ;',
+        'le détail de chaque séquence : consignes à dire mot pour mot (formulées pour ce public), ce que font les participant·es, ce que fait l’animateur·rice ;',
+        'au moins un exemple concret directement lié à la problématique : questions à poser, réponses ou productions que les participant·es pourraient apporter ;',
+        'des conseils pour réussir : posture d’animation, points de vigilance, erreurs fréquentes, façons de relancer ou de gérer les imprévus.'
+      ]),
+      '## 4. Clôture de la séance',
+      liste(['récolte et mise en forme des résultats de l’ensemble de la séance, suites à donner, et un court temps de bilan avec les participant·es.']),
+      '# Consignes de rédaction',
+      liste([
+        'Reste fidèle à chaque format décrit dans sa fiche (étapes, esprit, astuces) ; signale toute adaptation ou tout ajout de ta part.',
+        'S’il manque une information (nombre exact de participant·es, présentiel ou distanciel…), fais des hypothèses réalistes et précise-les dans la présentation, sans me poser de questions.',
+        'Choisis des exemples propres au sujet et au public, jamais génériques, et adapte le vocabulaire et le rythme au public.',
+        'Réponds en français, en Markdown (titres, listes, tableau), dans un style clair et directement utilisable le jour J.'
+      ])
+    ].join('\n\n');
+  }
+
+  function genererPromptDeroule(form) {
+    const champs = [form.elements.sujet, form.elements.publicCible];
+    const vides = champs.filter(ch => !ch.value.trim());
+    champs.forEach(ch => ch.setAttribute('aria-invalid', vides.includes(ch)));
+    if (vides.length) { vides[0].focus(); return; }
+    promptSaisi.sujet = champs[0].value.trim(); promptSaisi.publicCible = champs[1].value.trim();
+    stock.set('fe-prompt', promptSaisi);
+    $('#deroule-prompt-texte').value = construirePromptDeroule(promptSaisi.sujet, promptSaisi.publicCible);
+    $('#deroule-prompt-sortie').hidden = false;
+    $('#deroule-prompt-sortie').scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+
   /* ============================================================ Utilitaires */
 
   let toastTimer;
@@ -920,8 +1151,26 @@
       return;
     }
 
+    const ajout = t.closest('[data-ajout]');
+    if (ajout) { basculerDeroule(ajout.dataset.ajout); return; }
+    const dmonter = t.closest('[data-dmonter]'), ddescendre = t.closest('[data-ddescendre]'), dretirer = t.closest('[data-dretirer]');
+    if (dmonter || ddescendre || dretirer) {
+      const i = Number((dmonter || ddescendre || dretirer).dataset[dmonter ? 'dmonter' : ddescendre ? 'ddescendre' : 'dretirer']);
+      if (dretirer) deroule.splice(i, 1);
+      else { const j = dmonter ? i - 1 : i + 1; [deroule[i], deroule[j]] = [deroule[j], deroule[i]]; }
+      sauverDeroule(); rendreDeroule(); return;
+    }
+
     const action = t.closest('[data-action]')?.dataset.action;
     switch (action) {
+      case 'deroule': if (courante) basculerDeroule(courante.slug); return;
+      case 'ouvrir-deroule': ouvrirDeroule(); return;
+      case 'fermer-deroule': el.deroule.close(); return;
+      case 'deroule-vider': if (deroule.length && confirm('Vider le déroulé ?')) { deroule = []; sauverDeroule(); rendreDeroule(); } return;
+      case 'deroule-copier': copier(derouleEnTexte(), 'Déroulé copié'); return;
+      case 'deroule-lien': copier(`${location.origin + location.pathname}?deroule=${deroule.map(x => `${x.slug}:${x.min}`).join(',')}`, 'Lien du déroulé copié'); return;
+      case 'deroule-imprimer': imprimerDeroule(); return;
+      case 'copier-prompt-deroule': copier($('#deroule-prompt-texte').value, 'Prompt copié : collez-le dans votre assistant IA'); return;
       case 'reinit': reinitialiser(); return;
       case 'fermer': fermerFiche(); return;
       case 'prec': decaler(-1); return;
@@ -945,6 +1194,21 @@
     if (t === el.fiche && appui === el.fiche) fermerFiche();
     if (t === el.apropos && appui === el.apropos) el.apropos.close();
     if (t === el.qr && appui === el.qr) el.qr.close();
+    if (t === el.deroule && appui === el.deroule) el.deroule.close();
+  });
+
+  el.deroule.addEventListener('change', e => {
+    const champ = e.target.closest('[data-dmin]');
+    if (!champ) return;
+    const v = Math.round(Number(champ.value));
+    deroule[Number(champ.dataset.dmin)].min = v > 0 ? Math.min(v, 999) : dureeDefaut(PAR_SLUG[deroule[Number(champ.dataset.dmin)].slug]);
+    sauverDeroule(); rendreDeroule();
+  });
+  el.deroule.addEventListener('submit', e => { e.preventDefault(); genererPromptDeroule(e.target); });
+  // un clic sur une carte du déroulé ouvre sa fiche par-dessus
+  el.deroule.addEventListener('click', e => {
+    const a = e.target.closest('a[href^="#carte/"]');
+    if (a) { e.preventDefault(); el.deroule.close(); naviguer(a.getAttribute('href').slice(7)); }
   });
 
   /* ------------------------------------------------------------- QR code */
@@ -1002,6 +1266,7 @@
   });
   $('#btn-apropos').addEventListener('click', () => el.apropos.showModal());
   $('#btn-qr').addEventListener('click', afficherQr);
+  $('#btn-deroule').addEventListener('click', ouvrirDeroule);
   $('#btn-filtres').addEventListener('click', () => ouvrirFiltres(true));
   $('#btn-fermer-filtres').addEventListener('click', () => ouvrirFiltres(false));
   $('#btn-voir-resultats').addEventListener('click', () => ouvrirFiltres(false));
@@ -1015,7 +1280,7 @@
       if (e.key === 'ArrowRight' && !saisie) { e.preventDefault(); decaler(1); }
       return;
     }
-    if (e.key === '/' && !saisie && !el.apropos.open && !el.qr.open) { e.preventDefault(); el.recherche.focus(); el.recherche.select(); }
+    if (e.key === '/' && !saisie && !el.apropos.open && !el.qr.open && !el.deroule.open) { e.preventDefault(); el.recherche.focus(); el.recherche.select(); }
     if (e.key === 'Escape' && el.filtres.classList.contains('open')) ouvrirFiltres(false);
   });
 
@@ -1050,6 +1315,8 @@
   /* ============================================================ Démarrage */
 
   urlVersEtat();
+  lireDeroule();
+  sauverDeroule();
   rendre();
   route();
 })();

@@ -2,7 +2,7 @@
    Fichier GÉNÉRÉ par outils/generer-sw.js (liste de précache + version) : régénérez-le après toute
    modification de l'application ou des images, sinon les visiteurs gardent l'ancienne version en cache. */
 
-const VERSION = '1e417f26a6';
+const VERSION = 'd9b3093dce';
 const CACHE = 'faire-ensemble-' + VERSION;
 const CACHE_DOCS = 'faire-ensemble-docs';   // fichiers chargés à la demande (exemples), conservés entre versions
 
