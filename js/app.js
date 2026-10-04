@@ -1072,13 +1072,18 @@
     el.animDuree.value = Math.round(minuteur.total / 60000);
     el.anim.classList.remove('fini');
     afficherMinuteur();
-    el.anim.showModal();
+    // la fiche (boîte modale, dans la couche supérieure) est fermée le temps de l'animation, puis rouverte
+    minuteur.ficheOuverte = el.fiche.open;
+    if (el.fiche.open) el.fiche.close();
+    el.anim.hidden = false;
     document.body.classList.add('no-scroll');
+    el.anim.querySelector('[data-action="anim-marche"]').focus({ preventScroll: true });
   }
   function fermerAnimation() {
     if (document.fullscreenElement) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
-    el.anim.close();
-    if (!el.fiche.open) document.body.classList.remove('no-scroll');
+    el.anim.hidden = true;
+    if (minuteur.ficheOuverte && courante) { el.fiche.showModal(); el.fiche.querySelector('.btn-animer').focus({ preventScroll: true }); }
+    else document.body.classList.remove('no-scroll');
   }
 
   function afficherMinuteur() {
@@ -1169,14 +1174,11 @@
   }
   document.addEventListener('visibilitychange', () => { if (!document.hidden && minuteur.fin) garderEcranAllume(true); });
 
-  // Le plein écran est demandé sur la page entière (pas sur la boîte de dialogue, déjà dans la couche
-  // supérieure : certains navigateurs refusent) ; la vue, modale, reste au-dessus.
   function basculerPleinEcran() {
-    const racine = document.documentElement;
     if (document.fullscreenElement) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
-    else if (racine.requestFullscreen) racine.requestFullscreen({ navigationUI: 'hide' }).catch(() => {});
-    else if (racine.webkitRequestFullscreen) racine.webkitRequestFullscreen();
-    else toast('Plein écran non disponible sur ce navigateur');
+    else if (el.anim.requestFullscreen) el.anim.requestFullscreen({ navigationUI: 'hide' }).catch(() => toast('Plein écran refusé par le navigateur'));
+    else if (el.anim.webkitRequestFullscreen) el.anim.webkitRequestFullscreen();
+    else toast('Plein écran non disponible sur ce navigateur (utilisez le mode plein écran du navigateur)');
   }
 
   /* ============================================================ Utilitaires */
@@ -1339,12 +1341,14 @@
     if (t === el.deroule && appui === el.deroule) el.deroule.close();
   });
 
-  el.anim.addEventListener('cancel', e => { e.preventDefault(); fermerAnimation(); });
   el.animDuree.addEventListener('change', () => reglerMinuteur(Number(el.animDuree.value)));
-  el.anim.addEventListener('keydown', e => {
-    if (e.key === ' ' && !/^(INPUT|TEXTAREA)$/.test(document.activeElement?.tagName)) { e.preventDefault(); el.anim.querySelector('[data-action="anim-marche"]').click(); }
-    if ((e.key === 'f' || e.key === 'F') && !/^(INPUT|TEXTAREA)$/.test(document.activeElement?.tagName)) { e.preventDefault(); basculerPleinEcran(); }
-  });
+  document.addEventListener('keydown', e => {
+    if (el.anim.hidden) return;
+    const saisie = /^(INPUT|TEXTAREA)$/.test(document.activeElement?.tagName);
+    if (e.key === 'Escape') { e.preventDefault(); if (!document.fullscreenElement) fermerAnimation(); }   // en plein écran, Échap le quitte d'abord
+    if (e.key === ' ' && !saisie) { e.preventDefault(); el.anim.querySelector('[data-action="anim-marche"]').click(); }
+    if ((e.key === 'f' || e.key === 'F') && !saisie) { e.preventDefault(); basculerPleinEcran(); }
+  }, true);
 
   el.deroule.addEventListener('change', e => {
     const champ = e.target.closest('[data-dmin]');
@@ -1429,6 +1433,7 @@
       if (e.key === 'ArrowRight' && !saisie) { e.preventDefault(); decaler(1); }
       return;
     }
+    if (!el.anim.hidden) return;
     if (e.key === '/' && !saisie && !el.apropos.open && !el.qr.open && !el.deroule.open) { e.preventDefault(); el.recherche.focus(); el.recherche.select(); }
     if (e.key === 'Escape' && el.filtres.classList.contains('open')) ouvrirFiltres(false);
   });

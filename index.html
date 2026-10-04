@@ -194,7 +194,8 @@
   </dialog>
 
   <!-- Mode animation -->
-  <dialog class="animation" id="animation" aria-labelledby="anim-titre">
+  <!-- Un simple élément (pas un <dialog>) : les boîtes de dialogue ne peuvent pas passer en plein écran. -->
+  <section class="animation" id="animation" role="dialog" aria-modal="true" aria-labelledby="anim-titre" tabindex="-1" hidden>
     <div class="anim-bar">
       <h2 class="anim-titre" id="anim-titre"></h2>
       <div class="anim-outils">
@@ -225,7 +226,7 @@
         <p class="anim-aide">Espace : démarrer ou mettre en pause · F : plein écran</p>
       </aside>
     </div>
-  </dialog>
+  </section>
 
   <!-- Déroulé de séance -->
   <dialog class="deroule" id="deroule" aria-labelledby="deroule-titre">

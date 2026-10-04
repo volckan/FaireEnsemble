@@ -34,7 +34,7 @@ const verif = (nom, ok, detail = '') => { console.log(`${ok ? '✓' : '✗'} ${n
 
   await page.click('.btn-deroule'); await page.waitForTimeout(100);
   verif('déroulé : ajout depuis la fiche', await page.evaluate(() => document.querySelector('#nb-deroule').textContent === '1' && location.search.includes('deroule=world-cafe')));
-  await page.click('.btn-animer'); await page.waitForSelector('#animation[open]');
+  await page.click('.btn-animer'); await page.waitForSelector('#animation:not([hidden])');
   verif('mode animation : minuteur réglé sur la carte', /^\d{2,3}:\d\d$/.test(await page.locator('#anim-temps').textContent()), await page.locator('#anim-temps').textContent());
   await page.keyboard.press('Escape'); await page.keyboard.press('Escape'); await page.waitForTimeout(200);
   await page.click('#btn-deroule'); await page.waitForSelector('#deroule[open]');
