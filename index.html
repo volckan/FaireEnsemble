@@ -10,6 +10,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#1f6f5c">
+  <link rel="apple-touch-icon" href="img/icones/apple-touch-icon.png">
   <script>
     try { var t = localStorage.getItem('fe-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
   </script>
@@ -172,6 +175,9 @@
         <li>En bas de chaque fiche recette (bouton <strong>Prompt</strong> en haut de la fiche), la section <strong>Prompt</strong> prépare, à partir de votre sujet, de votre public et de la durée souhaitée, un texte à coller dans un assistant IA pour obtenir un déroulé détaillé de l’activité. Sous le bouton, un lien ouvre un <strong>exemple de réponse</strong> obtenu pour un même cas d’usage, afin de se faire une idée du résultat.</li>
         <li>Raccourcis : <kbd>/</kbd> rechercher, <kbd>←</kbd> <kbd>→</kbd> naviguer entre les fiches, <kbd>Échap</kbd> fermer.</li>
       </ul>
+      <h3>Hors ligne et installation</h3>
+      <p>Une fois visitée, l’application fonctionne <strong>sans connexion</strong> : cartes, synthèses et illustrations sont conservées dans le navigateur (les exemples de réponses le sont dès qu’ils ont été ouverts une fois). Sur téléphone ou ordinateur, elle peut être <strong>installée</strong> comme une application, depuis le menu du navigateur (« Installer l’application » ou « Sur l’écran d’accueil »).</p>
+      <p class="apropos-installer" id="apropos-installer" hidden><button class="btn btn-outline" type="button" data-action="installer">Installer l’application</button></p>
       <h3>Sources et licence</h3>
       <p>Les textes et illustrations des cartes sont issus de <a href="https://www.metacartes.cc/faire-ensemble/contenus-des-cartes-faire-ensemble/" target="_blank" rel="noopener">metacartes.cc</a> : « Métacartes Faire Ensemble », Lilian Ricaud et Mélanie Lacayrouze / Métacartes – Creative Commons Paternité – Partage dans les Mêmes Conditions 3.0 France (<a href="https://creativecommons.org/licenses/by-sa/3.0/fr/" target="_blank" rel="noopener">CC BY-SA 3.0 FR</a>). Basé sur une œuvre disponible à www.metacartes.cc.</p>
       <p>Cette application est une adaptation de ces contenus : les contenus adaptés (textes, illustrations, classement par objectifs) sont diffusés sous la même licence CC BY-SA, et le code de l’application sous licence MIT. Elle est indépendante et n’est ni produite ni approuvée par Métacartes.</p>
@@ -190,6 +196,11 @@
   </dialog>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="maj" id="maj" role="status" hidden>
+    <span>Une nouvelle version de l’application est prête.</span>
+    <button class="btn btn-primary" type="button" data-action="recharger">Recharger</button>
+    <button class="btn btn-icon" type="button" data-action="fermer-maj" aria-label="Plus tard"><svg class="i"><use href="#i-x"/></svg></button>
+  </div>
 
   <!-- Icônes -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">

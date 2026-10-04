@@ -1,0 +1,16 @@
+{
+  "name": "Faire Ensemble · Explorateur de cartes",
+  "short_name": "Faire Ensemble",
+  "description": "Trouvez rapidement le format d’animation adapté à votre réunion parmi les cartes Faire Ensemble (Métacartes, CC BY-SA).",
+  "lang": "fr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f4ef",
+  "theme_color": "#1f6f5c",
+  "icons": [
+    { "src": "img/icones/icone-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "img/icones/icone-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "img/icones/icone-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

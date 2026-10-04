@@ -90,4 +90,5 @@
     try { localStorage.setItem('fe-theme', t); } catch { /* ignoré */ }
   });
   $('#btn-imprimer').addEventListener('click', () => window.print());
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => { /* en ligne seulement */ });
 })();

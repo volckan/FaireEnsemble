@@ -928,6 +928,9 @@
       case 'suiv': decaler(1); return;
       case 'fav': if (courante) basculerFavori(courante.slug); return;
       case 'lien': copier(location.href, 'Lien de la carte copié'); return;
+      case 'recharger': location.reload(); return;
+      case 'fermer-maj': $('#maj').hidden = true; return;
+      case 'installer': installer(); return;
       case 'copier-selection': copier(location.origin + location.pathname + location.search, 'Lien de la sélection copié'); return;
       case 'imprimer': imprimer(); return;
       case 'fermer-apropos': el.apropos.close(); return;
@@ -1017,6 +1020,32 @@
   });
 
   window.addEventListener('hashchange', route);
+
+  /* =============================================== Hors ligne / installation */
+
+  // Service worker (sw.js, généré par outils/generer-sw.js) : l'application reste consultable sans réseau.
+  // Quand une nouvelle version est installée en arrière-plan, une bannière propose de recharger.
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').then(reg => {
+      const surveiller = sw => sw && sw.addEventListener('statechange', () => {
+        if (sw.state === 'installed' && navigator.serviceWorker.controller) $('#maj').hidden = false;
+      });
+      surveiller(reg.installing);
+      reg.addEventListener('updatefound', () => surveiller(reg.installing));
+    }).catch(() => { /* hors https ou navigateur sans service worker : l'application fonctionne, mais en ligne */ });
+  }
+
+  // Bouton « Installer l'application » (fenêtre À propos) quand le navigateur le permet
+  let invitationInstall = null;
+  window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); invitationInstall = e; $('#apropos-installer').hidden = false; });
+  window.addEventListener('appinstalled', () => { invitationInstall = null; $('#apropos-installer').hidden = true; toast('Application installée'); });
+  async function installer() {
+    if (!invitationInstall) return;
+    invitationInstall.prompt();
+    await invitationInstall.userChoice.catch(() => {});
+    invitationInstall = null;
+    $('#apropos-installer').hidden = true;
+  }
 
   /* ============================================================ Démarrage */
 
