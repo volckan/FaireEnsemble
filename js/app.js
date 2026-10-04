@@ -123,6 +123,51 @@
   };
   const favoris = new Set(stock.get('fe-favoris', []));
 
+  /* ======================================================= État dans l'URL */
+
+  // Les filtres vivent dans la partie « ?… » de l'adresse (la carte ouverte reste dans « #carte/… ») :
+  // une sélection se partage par simple lien et survit au rechargement. Une clé absente vaut la valeur par défaut.
+  const URL_CLES = { objectifs: 'obj', durees: 'duree', tailles: 'taille', complexites: 'cplx', types: 'type' };
+  const URL_TOUTES = ['q', ...Object.values(URL_CLES), 'sans', 'fav', 'tri'];
+  const URL_VALIDES = { objectifs: OBJECTIFS.map(o => o.id), durees: DUREES.map(d => d.id), tailles: TAILLES.map(t => t.id), complexites: COMPLEXITES.map(c => String(c.id)), types: TYPES.map(t => t.id) };
+
+  function etatVersUrl() {
+    const p = new URLSearchParams(location.search);
+    URL_TOUTES.forEach(k => p.delete(k));   // les autres paramètres éventuels sont conservés
+    if (etat.q) p.set('q', etat.q);
+    for (const [g, k] of Object.entries(URL_CLES)) {
+      const v = [...etat[g]].map(String);
+      if (g === 'types') { if (v.join(',') !== TYPES_DEFAUT.join(',')) p.set(k, v.length ? v.join(',') : 'tous'); }
+      else if (v.length) p.set(k, v.join(','));
+    }
+    if (etat.sansMateriel) p.set('sans', '1');
+    if (etat.favoris) p.set('fav', '1');
+    if (etat.tri !== 'pertinence') p.set('tri', etat.tri);
+    const s = p.toString().replace(/%2C/g, ',');
+    const url = location.pathname + (s ? `?${s}` : '') + location.hash;
+    if (url !== location.pathname + location.search + location.hash) history.replaceState(history.state, '', url);
+  }
+
+  function urlVersEtat() {
+    const p = new URLSearchParams(location.search);
+    if (!URL_TOUTES.some(k => p.has(k))) return;   // rien dans l'adresse : état par défaut
+    etat.q = (p.get('q') || '').trim();
+    for (const [g, k] of Object.entries(URL_CLES)) {
+      etat[g].clear();
+      const brut = p.get(k);
+      if (brut == null) { if (g === 'types') TYPES_DEFAUT.forEach(t => etat.types.add(t)); continue; }
+      if (g === 'types' && brut === 'tous') continue;
+      brut.split(',').filter(v => URL_VALIDES[g].includes(v)).forEach(v => etat[g].add(g === 'complexites' ? Number(v) : v));
+    }
+    etat.sansMateriel = p.get('sans') === '1';
+    etat.favoris = p.get('fav') === '1';
+    etat.tri = [...el.tri.options].some(o => o.value === p.get('tri')) ? p.get('tri') : 'pertinence';
+    el.recherche.value = etat.q;
+    el.tri.value = etat.tri;
+    el.sansMateriel.checked = etat.sansMateriel;
+    el.favoris.checked = etat.favoris;
+  }
+
   /* ============================================================== Filtrage */
 
   const tokens = () => plain(etat.q).split(' ').filter(Boolean);
@@ -261,6 +306,7 @@
     if (etat.sansMateriel) pill('sansMateriel', '', 'Sans matériel');
     if (etat.favoris) pill('favoris', '', 'Mes favoris');
     if (pills.length > 1) pills.push(`<button type="button" class="pill pill-clear" data-action="reinit">Tout effacer</button>`);
+    if (pills.length) pills.push(`<button type="button" class="pill pill-clear" data-action="copier-selection" title="Copier l’adresse de cette sélection de cartes">${icone('link')}Copier le lien</button>`);
     el.actifs.innerHTML = pills.join('');
     const nb = etat.objectifs.size + etat.durees.size + etat.tailles.size + etat.complexites.size + etat.types.size + etat.sansMateriel + etat.favoris;
     el.nbFiltres.textContent = nb;
@@ -277,6 +323,7 @@
     el.compteur.innerHTML = resultats.length === total
       ? `<strong>${total}</strong> cartes`
       : `<strong>${resultats.length}</strong> carte${resultats.length > 1 ? 's' : ''} sur ${total}`;
+    etatVersUrl();
   }
 
   /* ================================================================= Fiche */
@@ -881,6 +928,7 @@
       case 'suiv': decaler(1); return;
       case 'fav': if (courante) basculerFavori(courante.slug); return;
       case 'lien': copier(location.href, 'Lien de la carte copié'); return;
+      case 'copier-selection': copier(location.origin + location.pathname + location.search, 'Lien de la sélection copié'); return;
       case 'imprimer': imprimer(); return;
       case 'fermer-apropos': el.apropos.close(); return;
       case 'fermer-qr': el.qr.close(); return;
@@ -898,8 +946,8 @@
 
   /* ------------------------------------------------------------- QR code */
 
-  /** Adresse de l'application (sans carte ouverte), telle qu'elle est hébergée. */
-  const urlApp = () => location.origin + location.pathname + location.search;
+  /** Adresse de l'application (sans filtres ni carte ouverte), telle qu'elle est hébergée. */
+  const urlApp = () => location.origin + location.pathname;
 
   /** QR code de l'adresse de l'application, en SVG (généré à l'ouverture : valable quel que soit l'hébergement). */
   function afficherQr() {
@@ -972,6 +1020,7 @@
 
   /* ============================================================ Démarrage */
 
+  urlVersEtat();
   rendre();
   route();
 })();
