@@ -199,6 +199,8 @@
     <div class="anim-bar">
       <h2 class="anim-titre" id="anim-titre"></h2>
       <div class="anim-outils">
+        <button class="btn btn-icon" type="button" data-action="anim-moins-grand" title="Caractères plus petits (−)" aria-label="Caractères plus petits"><svg class="i" aria-hidden="true"><use href="#i-font-moins"/></svg></button>
+        <button class="btn btn-icon" type="button" data-action="anim-plus-grand" title="Caractères plus grands (+)" aria-label="Caractères plus grands"><svg class="i" aria-hidden="true"><use href="#i-font-plus"/></svg></button>
         <button class="btn btn-icon" type="button" data-action="anim-essentiel" title="Afficher ou masquer les astuces" aria-label="Afficher ou masquer les astuces"><svg class="i" aria-hidden="true"><use href="#i-bulb"/></svg></button>
         <button class="btn btn-icon" type="button" data-action="anim-plein-ecran" title="Plein écran (F)" aria-label="Plein écran"><svg class="i" aria-hidden="true"><use href="#i-expand"/></svg></button>
         <button class="btn btn-icon" type="button" data-action="fermer-anim" title="Quitter (Échap)" aria-label="Quitter le mode animation"><svg class="i" aria-hidden="true"><use href="#i-x"/></svg></button>
@@ -223,7 +225,7 @@
           <label>Durée <input type="number" id="anim-duree" min="1" max="999" inputmode="numeric" aria-label="Durée du minuteur en minutes"> min</label>
           <button class="btn btn-outline" type="button" data-action="anim-plus" aria-label="Une minute de plus">+1 min</button>
         </div>
-        <p class="anim-aide">Espace : démarrer ou mettre en pause · F : plein écran</p>
+        <p class="anim-aide">Espace : démarrer ou mettre en pause · F : plein écran · + / − : taille du texte</p>
       </aside>
     </div>
   </section>
@@ -292,6 +294,8 @@
       <symbol id="i-dice" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8.5" cy="8.5" r="1.2" class="f"/><circle cx="15.5" cy="15.5" r="1.2" class="f"/><circle cx="15.5" cy="8.5" r="1.2" class="f"/><circle cx="8.5" cy="15.5" r="1.2" class="f"/><circle cx="12" cy="12" r="1.2" class="f"/></symbol>
       <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></symbol>
       <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+      <symbol id="i-font-moins" viewBox="0 0 24 24"><path d="M4 18 9.5 5 15 18M6 13.5h7"/><path d="M17 15h5"/></symbol>
+      <symbol id="i-font-plus" viewBox="0 0 24 24"><path d="M3 18 8.5 5 14 18M5 13.5h7"/><path d="M19 12v6M16 15h6"/></symbol>
       <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z" class="f"/></symbol>
       <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="4.5" width="4" height="15" rx="1" class="f"/><rect x="14" y="4.5" width="4" height="15" rx="1" class="f"/></symbol>
       <symbol id="i-expand" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>

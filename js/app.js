@@ -1071,6 +1071,7 @@
     el.anim.querySelector('.anim-astuces-bloc').hidden = !c.astuces;
     el.animDuree.value = Math.round(minuteur.total / 60000);
     el.anim.classList.remove('fini');
+    el.anim.querySelector('.anim-texte').style.setProperty('--zoom', minuteur.zoom);
     afficherMinuteur();
     // la fiche (boîte modale, dans la couche supérieure) est fermée le temps de l'animation, puis rouverte
     minuteur.ficheOuverte = el.fiche.open;
@@ -1174,6 +1175,16 @@
     } catch { minuteur.veille = null; }
   }
   document.addEventListener('visibilitychange', () => { if (!document.hidden && minuteur.fin) garderEcranAllume(true); });
+
+  /** Taille du texte du panneau (facteur 0,6 à 2, mémorisé). */
+  function zoomerTexte(delta) {
+    const z = Math.min(2, Math.max(0.6, Math.round((minuteur.zoom + delta) * 10) / 10));
+    minuteur.zoom = z;
+    el.anim.querySelector('.anim-texte').style.setProperty('--zoom', z);
+    stock.set('fe-anim-zoom', z);
+    toast(`Texte : ${Math.round(z * 100)} %`);
+  }
+  minuteur.zoom = Number(stock.get('fe-anim-zoom', 1)) || 1;
 
   function basculerPleinEcran() {
     if (document.fullscreenElement) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
@@ -1307,6 +1318,8 @@
       case 'anim-plus': ajusterMinuteur(1); return;
       case 'anim-moins': ajusterMinuteur(-1); return;
       case 'anim-plein-ecran': basculerPleinEcran(); return;
+      case 'anim-plus-grand': zoomerTexte(0.1); return;
+      case 'anim-moins-grand': zoomerTexte(-0.1); return;
       case 'anim-essentiel': el.anim.classList.toggle('sans-astuces'); return;
       case 'deroule': if (courante) basculerDeroule(courante.slug); return;
       case 'ouvrir-deroule': ouvrirDeroule(); return;
@@ -1349,6 +1362,8 @@
     if (e.key === 'Escape') { e.preventDefault(); if (!document.fullscreenElement) fermerAnimation(); }   // en plein écran, Échap le quitte d'abord
     if (e.key === ' ' && !saisie) { e.preventDefault(); el.anim.querySelector('[data-action="anim-marche"]').click(); }
     if ((e.key === 'f' || e.key === 'F') && !saisie) { e.preventDefault(); basculerPleinEcran(); }
+    if ((e.key === '+' || e.key === '=') && !saisie) { e.preventDefault(); zoomerTexte(0.1); }
+    if (e.key === '-' && !saisie) { e.preventDefault(); zoomerTexte(-0.1); }
   }, true);
 
   el.deroule.addEventListener('change', e => {

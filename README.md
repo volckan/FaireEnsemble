@@ -26,7 +26,7 @@ Elle aide à trouver un format adapté à une réunion, à préparer une séance
 | Page `exemple.html?carte=<slug>` | lien sous « Générer le prompt » | affiche une réponse d’exemple (Markdown mis en forme, prompt, source) |
 
 Raccourcis : `/` recherche, `←` `→` fiche précédente / suivante, `Échap` fermer ; dans le mode animation, `Espace` démarre ou
-met en pause, `F` bascule le plein écran.
+met en pause, `F` bascule le plein écran, `+` et `−` changent la taille du texte.
 
 ## Arborescence
 
@@ -84,7 +84,7 @@ outils/                scripts de maintenance (Node.js)
 - **Encodage des fichiers `.md`**. Certains hébergeurs ne déclarent pas l’UTF-8 pour les `.md` : c’est pourquoi
   `exemple.html` affiche le prompt et le Markdown brut dans la page au lieu de renvoyer vers les fichiers.
 - **Clés `localStorage`** : `fe-theme` (thème), `fe-favoris` (favoris), `fe-prompt` (sujet, public, durée saisis),
-  `fe-deroule` (déroulé). Renommer une clé fait perdre les données des utilisateurs.
+  `fe-deroule` (déroulé), `fe-anim-zoom` (taille du texte du mode animation). Renommer une clé fait perdre les données des utilisateurs.
 - **Paramètres d’adresse** : `?q`, `obj`, `duree`, `taille`, `cplx`, `type` (`tous` = aucun filtre de type), `sans`,
   `fav`, `tri`, `deroule` ; `#carte/<slug>` pour la fiche. Les filtres par défaut ne sont pas écrits (type « recette »).
   Toute nouvelle facette doit être ajoutée à `URL_CLES` / `URL_VALIDES` dans `app.js`.
