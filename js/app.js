@@ -1076,7 +1076,7 @@
     document.body.classList.add('no-scroll');
   }
   function fermerAnimation() {
-    if (document.fullscreenElement === el.anim) document.exitFullscreen().catch(() => {});
+    if (document.fullscreenElement) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
     el.anim.close();
     if (!el.fiche.open) document.body.classList.remove('no-scroll');
   }
@@ -1169,9 +1169,14 @@
   }
   document.addEventListener('visibilitychange', () => { if (!document.hidden && minuteur.fin) garderEcranAllume(true); });
 
+  // Le plein écran est demandé sur la page entière (pas sur la boîte de dialogue, déjà dans la couche
+  // supérieure : certains navigateurs refusent) ; la vue, modale, reste au-dessus.
   function basculerPleinEcran() {
-    if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
-    else if (el.anim.requestFullscreen) el.anim.requestFullscreen().catch(() => {});
+    const racine = document.documentElement;
+    if (document.fullscreenElement) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+    else if (racine.requestFullscreen) racine.requestFullscreen({ navigationUI: 'hide' }).catch(() => {});
+    else if (racine.webkitRequestFullscreen) racine.webkitRequestFullscreen();
+    else toast('Plein écran non disponible sur ce navigateur');
   }
 
   /* ============================================================ Utilitaires */
@@ -1338,7 +1343,7 @@
   el.animDuree.addEventListener('change', () => reglerMinuteur(Number(el.animDuree.value)));
   el.anim.addEventListener('keydown', e => {
     if (e.key === ' ' && !/^(INPUT|TEXTAREA)$/.test(document.activeElement?.tagName)) { e.preventDefault(); el.anim.querySelector('[data-action="anim-marche"]').click(); }
-    if (e.key === 'f' || e.key === 'F') basculerPleinEcran();
+    if ((e.key === 'f' || e.key === 'F') && !/^(INPUT|TEXTAREA)$/.test(document.activeElement?.tagName)) { e.preventDefault(); basculerPleinEcran(); }
   });
 
   el.deroule.addEventListener('change', e => {
