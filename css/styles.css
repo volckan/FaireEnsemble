@@ -657,6 +657,7 @@ a.concept:hover { text-decoration-style: solid; }
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center;
 }
 .anim-temps { font: 700 clamp(64px, 9vw, 150px)/1 var(--font); font-variant-numeric: tabular-nums; letter-spacing: -.03em; color: var(--ink); }
+.anim-temps.long { font-size: clamp(50px, 6.6vw, 110px); }
 .animation.en-cours .anim-temps { color: var(--accent); }
 .anim-barre { width: 100%; height: 8px; border-radius: 999px; background: var(--surface-2); overflow: hidden; }
 .anim-barre i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .25s linear; }
@@ -667,12 +668,13 @@ a.concept:hover { text-decoration-style: solid; }
 .anim-controles { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
 .anim-controles .btn { height: 48px; font-size: 16px; padding: 0 20px; }
 .anim-reglage { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: center; font-size: 14px; color: var(--ink-2); }
-.anim-reglage input { width: 64px; height: 36px; margin: 0 4px; padding: 0 8px; border: 1px solid var(--line-2); border-radius: 9px; background: var(--surface); color: var(--ink); font: 600 16px var(--font); text-align: center; }
+.anim-reglage input { width: 78px; height: 36px; margin: 0 4px; padding: 0 8px; border: 1px solid var(--line-2); border-radius: 9px; background: var(--surface); color: var(--ink); font: 600 16px var(--font); text-align: center; }
 .anim-aide { margin: 0; font-size: 12.5px; color: var(--ink-3); }
 @media (max-width: 760px) {
   .anim-corps { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); }
   .anim-minuteur { order: -1; border-left: 0; border-bottom: 1px solid var(--line); padding: 14px 16px; gap: 8px; }
   .anim-temps { font-size: clamp(56px, 18vw, 96px); }
+  .anim-temps.long { font-size: clamp(44px, 14vw, 80px); }
   .anim-aide { display: none; }
   .anim-texte { font-size: clamp(19px, 5vw, 26px); padding: 18px 18px 40px; }
   .anim-bar { padding: 10px 12px 10px 16px; }

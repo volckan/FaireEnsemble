@@ -1089,6 +1089,7 @@
   function afficherMinuteur() {
     const enCours = !!minuteur.fin;
     el.animTemps.textContent = mmss(minuteur.restant);
+    el.animTemps.classList.toggle('long', el.animTemps.textContent.length > 5);   // ≥ 100 min : chiffres plus petits
     el.anim.querySelector('.anim-barre i').style.width = `${minuteur.total ? 100 - 100 * minuteur.restant / minuteur.total : 0}%`;
     const b = el.anim.querySelector('[data-action="anim-marche"]');
     b.querySelector('.lbl').textContent = enCours ? 'Pause' : minuteur.restant < minuteur.total && minuteur.restant > 0 ? 'Reprendre' : 'Démarrer';
